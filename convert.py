@@ -3,13 +3,14 @@
 
 import logging
 from string import Template
+from os import path
 
-from pad.converter import app, reader, writer, specification
+from pad.converter import app, writer
 
 pm_input_base_dir_template = Template(r'.\data_for_test\${ano}\MES${mes}')
 cm_input_base_dir_template = Template(r'.\data_for_test\${ano}\CAMARA\MES${mes}')
-output_base_dir = r'.\data_for_test\output'
-current_base_dir = r'.\data_for_test\current'
+output_base_dir = Template(r'.\data_for_test\output\${ano}-${mes}')
+current_base_dir = r'.\data_for_test\output\current'
 
 
 def main():
@@ -27,11 +28,15 @@ def main():
 
     pm_input_dir = pm_input_base_dir_template.substitute(ano=ano, mes=mes)
     cm_input_dir = cm_input_base_dir_template.substitute(ano=ano, mes=mes)
-    # logger.info(f'Buscando dados em:\n\t\t-> {pm_input_dir}\n\t\t-> {cm_input_dir}')
+    output_dir = output_base_dir.substitute(ano=ano, mes=mes)
 
-    converter = app.App(logger, readers=[reader.FwfReader(pm_input_dir), reader.FwfReader(cm_input_dir)],
-              writers=[writer.CsvWriter(output_base_dir), writer.CsvWriter(current_base_dir)], specs=specification.Spec())
-    converter.run()
+    wcsv = writer.CsvWriter(logger, path.join(output_dir, 'csv'))
+    wccsv = writer.CsvWriter(logger, path.join(current_base_dir, 'csv'))
+
+    running = app.App(logger, [pm_input_dir, cm_input_dir], [wcsv, wccsv])
+    running.run()
+
+
 
 
 if __name__ == '__main__':
