@@ -1,6 +1,6 @@
 """Classe principal e controller do conversor.
 """
-from pad.converter.parser import empenho
+from pad.converter.parser import empenho, liquidac
 
 class App:
     _logger = None
@@ -34,6 +34,8 @@ class App:
         self._logger.info('Executando a conversão...')
         df = self._run_parser(empenho.Empenho(self._logger, self._sources))
         self._write(df, 'empenho')
+        df = self._run_parser(liquidac.Liquidac(self._logger, self._sources))
+        self._write(df, 'liquidac')
 
     def _run_parser(self, parser):
         return parser.parse()
