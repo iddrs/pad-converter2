@@ -1,6 +1,7 @@
 import pandas as pd
 from os import path
 import warnings
+from datetime import datetime
 
 class ParserBase:
     _logger = None
@@ -26,6 +27,8 @@ class ParserBase:
             with warnings.catch_warnings(): # Ignora um aviso de que não tem converters para todas as colunas, conforme https://docs.python.org/3/library/warnings.html#temporarily-suppressing-warnings
                 warnings.simplefilter('ignore')
                 df = pd.read_fwf(f, colspecs=self._colspec(), names=self._colnames(), dtype=self._dtypes(), skiprows=1, skipfooter=1, skipblanklines=True, encoding_errors='replace', converters=self._converters())
+                header = self._parse_header(f)
+                df = self._inject_header(df, header)
             self._df.append(df)
         self._df = pd.concat(self._df, axis=0, ignore_index=True)
 
@@ -59,3 +62,23 @@ class ParserBase:
             if len(t) == 5:
                 converters[t[0]] = t[4]
         return converters
+
+    def _inject_header(self, df, header):
+        df['cnpj'] = header['cnpj']
+        df['data_inicial'] = header['data_inicial']
+        df['data_final'] = header['data_final']
+        df['data_geracao'] = header['data_geracao']
+        return df
+
+    def _parse_header(self, file):
+        with open(file, 'r') as f:
+            for l in f:
+                h = {
+                    'cnpj': l[:14],
+                    'data_inicial': datetime.strptime(l[14:22], '%d%m%Y'),
+                    'data_final': datetime.strptime(l[22:30], '%d%m%Y'),
+                    'data_geracao': datetime.strptime(l[30:38], '%d%m%Y'),
+                    'nome_entidade': l[38:]
+                }
+                break
+            return h

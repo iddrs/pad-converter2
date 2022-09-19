@@ -1,5 +1,7 @@
-from pad.converter.parser import ParserBase
 import pandas as pd
+
+from pad.converter.parser import ParserBase
+
 
 class Empenho(ParserBase):
     _file_name = 'EMPENHO'
