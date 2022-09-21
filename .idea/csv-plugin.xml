@@ -3,6 +3,13 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="\data_for_test\output\2022-07\csv\bal_rec.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\data_for_test\output\2022-07\csv\empenho.csv">
           <value>
             <Attribute>
@@ -11,6 +18,13 @@
           </value>
         </entry>
         <entry key="\data_for_test\output\2022-07\csv\liquidac.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\data_for_test\output\current\csv\bal_rec.csv">
           <value>
             <Attribute>
               <option name="separator" value=";" />

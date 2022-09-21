@@ -3,26 +3,23 @@ import pandas as pd
 from pad.converter.parser import ParserBase
 
 
-class Pagament(ParserBase):
-    _file_name = 'PAGAMENT'
+class BalRec(ParserBase):
+    _file_name = 'BAL_REC'
     _spec = (
-        ('numero_empenho', 1, 13, str),
-        ('ano_empenho', 1, 5, int),
-        ('entidade_empenho', 6, 7, int),
-        ('empenho', 8, 13, int),
-        ('numero_pagamento', 14, 33, int),
-        ('data_pagamento', 34, 41, str),
-        ('valor_pagamento', 42, 54, str),
-        ('sinal_valor', 55, 55, str),
-        ('codigo_operacao', 176, 205, str),
-        ('conta_contabil_debito', 206, 225, str),
-        ('orgao_debito', 226, 227, int),
-        ('uniorcam_debito', 226, 229, int),
-        ('conta_contabil_credito', 230, 249, str),
-        ('orgao_credito', 250, 251, int),
-        ('uniorcam_credito', 250, 253, int),
-        ('historico_pagamento', 254, 653, str),
-        ('numero_liquidacao', 654, 673, int)
+        ('codigo_receita', 1, 20, str),
+        ('orgao', 21, 22, int),
+        ('uniorcam', 21, 24, int),
+        ('receita_orcada', 25, 37, str),
+        ('receita_realizada', 38, 50, str),
+        ('recurso_vinculado', 51, 54, int),
+        ('especificacao_receita', 55, 224, str),
+        ('tipo_nivel_receita', 225, 225, str),
+        ('numero_nivel_receita', 226, 227, int),
+        ('caracteristica_peculiar_receita', 228, 230, int),
+        ('previsao_atualizada', 231, 243, str),
+        ('complemento_recurso_vinculado', 244, 247, int),
+        ('fonte_recurso', 248, 251, int),
+        ('codigo_acompanhamento_orcamentario', 252, 255, int)
     )
 
     def __init__(self, logger, sources: list):
@@ -30,16 +27,51 @@ class Pagament(ParserBase):
         self._sources = sources
 
     def _prepare(self):
-        self._data_pagamento()
-        self._valor_pagamento()
+        self._receita_orcada()
+        self._receita_realizada()
+        self._previsao_atualizada()
+        self._receita_a_arrecadar()
+        self._valor_atualizacao()
+        self._codigo_receita()
+        self._receita_base()
+        self._receita_filtro()
 
-    def _data_pagamento(self):
-        """Converte DDMMAAAA para o formato de data do Pandas."""
-        self._df['data_pagamento'] = pd.to_datetime(self._df['data_pagamento'], format='%d%m%Y', exact=True)
+    def _receita_orcada(self):
+        self._converte_valor('receita_orcada')
 
-    def _valor_pagamento(self):
-        """Converte o valor em decimal e remove o sinal."""
-        self._df['valor_pagamento'] = self._df['sinal_valor'] + self._df['valor_pagamento']
-        del self._df['sinal_valor']
-        self._df['valor_pagamento'] = pd.to_numeric(self._df['valor_pagamento'], downcast='integer')
-        self._df['valor_pagamento'] = round(self._df['valor_pagamento'] / 100, 2)
+    def _receita_realizada(self):
+        self._converte_valor('receita_realizada')
+
+    def _previsao_atualizada(self):
+        self._converte_valor('previsao_atualizada')
+
+    def _receita_a_arrecadar(self):
+        self._df['receita_a_arrecadar'] = round(self._df['previsao_atualizada'] - self._df['receita_realizada'], 2)
+
+    def _valor_atualizacao(self):
+        self._df['valor_atualizacao'] = round(self._df['previsao_atualizada'] - self._df['receita_orcada'], 2)
+
+    def _converte_valor(self, campo):
+        """Converte o valor em decimal."""
+        self._df[campo] = self._df[campo].str.lstrip('0')
+        self._df[campo] = pd.to_numeric(self._df[campo], downcast='integer')
+        self._df[campo] = round(self._df[campo] / 100, 2)
+
+    def _codigo_receita(self):
+        self._df['codigo_receita'] = self._df['codigo_receita'].str.lstrip('0')
+
+    def _receita_base(self):
+        self._df['receita_base'] = self._df['codigo_receita']
+        for i, r in self._df.iterrows():
+            if self._df.at[i, 'codigo_receita'][:1] == '7':
+                self._df.at[i, 'receita_base'] = '1' + self._df.at[i, 'codigo_receita'][1:]
+            elif self._df.at[i, 'codigo_receita'][:1] == '8':
+                self._df.at[i, 'receita_base'] = '2' + self._df.at[i, 'codigo_receita'][1:]
+            elif self._df.at[i, 'codigo_receita'][:1] == '9':
+                self._df.at[i, 'receita_base'] = self._df.at[i, 'codigo_receita'][1:]
+            else:
+                pass
+
+    def _receita_filtro(self):
+        self._df['filtro'] = self._df['codigo_receita'].str.rstrip('0')
+        self._df['filtro_base'] = self._df['receita_base'].str.rstrip('0')
