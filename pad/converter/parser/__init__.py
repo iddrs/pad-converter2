@@ -13,6 +13,7 @@ class ParserBase:
         self._text_to_df()
         self._logger.debug(f'Preparando dados de {self._file_name}')
         self._prepare()
+        self._inject_entidade()
         return self._df
 
 
@@ -82,3 +83,25 @@ class ParserBase:
                 }
                 break
             return h
+
+    def _inject_entidade(self):
+        self._df['entidade'] = None
+        for i, r in self._df.iterrows():
+            if self._df.at[i, 'cnpj'] == '12292535000162':
+                self._df.at[i, 'entidade'] = 'cm'
+            else:
+                if 'orgao' in self._df:
+                    if self._df.at[i, 'orgao'] == 12:
+                        self._df.at[i, 'entidade'] = 'fpsm'
+                    else:
+                        self._df.at[i, 'entidade'] = 'pm'
+                elif 'entidade_empenho' in self._df:
+                    if self._df.at[i, 'entidade_empenho'] == 1:
+                        self._df.at[i, 'entidade'] = 'fpsm'
+                    else:
+                        self._df.at[i, 'entidade'] = 'pm'
+                else:
+                    if self._df.at[i, 'recurso_vinculado'] == 50:
+                        self._df.at[i, 'entidade'] = 'fpsm'
+                    else:
+                        self._df.at[i, 'entidade'] = 'pm'
