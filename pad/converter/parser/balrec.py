@@ -35,6 +35,8 @@ class BalRec(ParserBase):
         self._codigo_receita()
         self._receita_base()
         self._receita_filtro()
+        self._classe_receita()
+        self._tipo_receita()
 
     def _receita_orcada(self):
         self._converte_valor('receita_orcada')
@@ -61,7 +63,7 @@ class BalRec(ParserBase):
         self._df['codigo_receita'] = self._df['codigo_receita'].str.lstrip('0')
 
     def _receita_base(self):
-        self._df['receita_base'] = self._df['codigo_receita']
+        self._df['receita_base'] = ''
         for i, r in self._df.iterrows():
             if self._df.at[i, 'codigo_receita'][:1] == '7':
                 self._df.at[i, 'receita_base'] = '1' + self._df.at[i, 'codigo_receita'][1:]
@@ -70,8 +72,25 @@ class BalRec(ParserBase):
             elif self._df.at[i, 'codigo_receita'][:1] == '9':
                 self._df.at[i, 'receita_base'] = self._df.at[i, 'codigo_receita'][1:]
             else:
-                pass
+                self._df['receita_base'] = self._df['codigo_receita']
 
     def _receita_filtro(self):
         self._df['filtro'] = self._df['codigo_receita'].str.rstrip('0')
         self._df['filtro_base'] = self._df['receita_base'].str.rstrip('0')
+
+    def _classe_receita(self):
+        self._df['classe_receita'] = ''
+        for i, r in self._df.iterrows():
+            if self._df.at[i, 'codigo_receita'][:1] == '7':
+                self._df.at[i, 'classe_receita'] = 'intra'
+            elif self._df.at[i, 'codigo_receita'][:1] == '8':
+                self._df.at[i, 'classe_receita'] = 'intra'
+            elif self._df.at[i, 'codigo_receita'][:1] == '9':
+                self._df.at[i, 'classe_receita'] = 'dedutora'
+            else:
+                self._df['classe_receita'] = 'normal'
+
+    def _tipo_receita(self):
+        self._df['tipo_receita'] = ''
+        for i, r in self._df.iterrows():
+            self._df.at[i, 'tipo_receita'] = self._df.at[i, 'codigo_receita'][7:8]
