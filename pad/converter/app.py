@@ -1,6 +1,6 @@
 """Classe principal e controller do conversor.
 """
-from pad.converter.parser import empenho, liquidac, pagament, balrec
+from pad.converter.parser import empenho, liquidac, pagament, balrec, receita
 
 class App:
     _logger = None
@@ -40,8 +40,10 @@ class App:
         # self._write(df, 'liquidac')
         # df = self._run_parser(pagament.Pagament(self._logger, self._sources))
         # self._write(df, 'pagament')
-        df = self._run_parser(balrec.BalRec(self._logger, self._sources))
-        self._write(df, 'bal_rec')
+        # df = self._run_parser(balrec.BalRec(self._logger, self._sources))
+        # self._write(df, 'bal_rec')
+        df = self._run_parser(receita.Receita(self._logger, self._sources))
+        self._write(df, 'receita')
 
     def _run_parser(self, parser):
         return parser.parse()
