@@ -33,7 +33,7 @@ def main():
     wcsv = writer.CsvWriter(logger, path.join(output_dir, 'csv'))
     wccsv = writer.CsvWriter(logger, path.join(current_base_dir, 'csv'))
 
-    running = app.App(logger, [pm_input_dir, cm_input_dir], [wcsv, wccsv])
+    running = app.App(logger, [pm_input_dir, cm_input_dir], [wcsv, wccsv], mes)
     running.run()
 
 
