@@ -18,7 +18,8 @@ class BalRec(ParserBase):
         ('caracteristica_peculiar_receita', 228, 230, int),
         ('previsao_atualizada', 231, 243, str),
         ('complemento_recurso_vinculado', 244, 247, int),
-        ('fonte_recurso', 248, 251, int),
+        ('indicador_exercicio_fonte_recurso', 248, 248, int),
+        ('fonte_recurso', 249, 251, int),
         ('codigo_acompanhamento_orcamentario', 252, 255, int)
     )
 

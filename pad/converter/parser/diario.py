@@ -22,7 +22,8 @@ class DiarioContabil(ParserBase):
         ('indicador_superavit_financeiro', 256, 256, str),
         ('recurso_vinculado', 257, 260, int),
         ('complemento_recurso_vinculado', 261, 264, int),
-        ('fonte_recurso', 265, 268, int),
+        ('indicador_exercicio_fonte_recurso', 265, 265, int),
+        ('fonte_recurso', 266, 268, int),
         ('acompanhamento_orcamentario', 269, 272, int)
     )
 

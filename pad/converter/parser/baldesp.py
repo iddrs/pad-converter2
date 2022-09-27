@@ -32,7 +32,8 @@ class BalDesp(ParserBase):
         ('transferencia', 218, 230, str),
         ('transposicao', 231, 243, str),
         ('remanejamento', 244, 256, str),
-        ('fonte_recurso', 257, 260, int),
+        ('indicador_exercicio_fonte_recurso', 257, 257, int),
+        ('fonte_recurso', 258, 260, int),
         ('acompanhamento_orcamentario', 261, 264, int)
     )
 

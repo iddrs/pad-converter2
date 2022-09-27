@@ -34,7 +34,8 @@ class Empenho(ParserBase):
         ('licitacao_compartilhada', 711, 711, str),
         ('cnpj_gerenciador', 712, 725, str),
         ('complemento_recurso_vinculado', 726, 729, int),
-        ('fonte_recurso', 730, 733, int),
+        ('indicador_exercicio_fonte_recurso', 730, 730, int),
+        ('fonte_recurso', 731, 733, int),
         ('acompanhamento_orcamentario', 734, 737, int)
     )
 
