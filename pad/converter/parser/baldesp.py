@@ -60,11 +60,11 @@ class BalDesp(ParserBase):
         self._converte_valor('transposicao')
         self._converte_valor('remanejamento')
         self._dotacao_atualizada()
-        # self._credito_adicional()
-        # self._dotacao_a_empenhar()
-        # self._empenhado_a_liquidar()
-        # self._empenhado_a_pagar()
-        # self._liquidado_a_pagar()
+        self._credito_adicional()
+        self._dotacao_a_empenhar()
+        self._empenhado_a_liquidar()
+        self._empenhado_a_pagar()
+        self._liquidado_a_pagar()
 
     def _converte_valor(self, campo):
         """Converte o valor em decimal."""
