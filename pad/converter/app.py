@@ -1,6 +1,6 @@
 """Classe principal e controller do conversor.
 """
-from pad.converter.parser import empenho, liquidac, pagament, balrec, receita, baldesp, diario
+from pad.converter.parser import empenho, liquidac, pagament, balrec, receita, baldesp, diario, balver
 
 class App:
     _logger = None
@@ -34,20 +34,22 @@ class App:
 
     def _parse(self):
         self._logger.info('Executando a conversão...')
-        df = self._run_parser(empenho.Empenho(self._logger, self._sources))
-        self._write(df, 'empenho')
-        df = self._run_parser(liquidac.Liquidac(self._logger, self._sources))
-        self._write(df, 'liquidac')
-        df = self._run_parser(pagament.Pagament(self._logger, self._sources))
-        self._write(df, 'pagament')
-        df = self._run_parser(balrec.BalRec(self._logger, self._sources))
-        self._write(df, 'bal_rec')
-        df = self._run_parser(receita.Receita(self._logger, self._sources))
-        self._write(df, 'receita')
-        df = self._run_parser(baldesp.BalDesp(self._logger, self._sources))
-        self._write(df, 'bal_desp')
-        df = self._run_parser(diario.DiarioContabil(self._logger, self._sources))
-        self._write(df, 'diario_contabil')
+        # df = self._run_parser(empenho.Empenho(self._logger, self._sources))
+        # self._write(df, 'empenho')
+        # df = self._run_parser(liquidac.Liquidac(self._logger, self._sources))
+        # self._write(df, 'liquidac')
+        # df = self._run_parser(pagament.Pagament(self._logger, self._sources))
+        # self._write(df, 'pagament')
+        # df = self._run_parser(balrec.BalRec(self._logger, self._sources))
+        # self._write(df, 'bal_rec')
+        # df = self._run_parser(receita.Receita(self._logger, self._sources))
+        # self._write(df, 'receita')
+        # df = self._run_parser(baldesp.BalDesp(self._logger, self._sources))
+        # self._write(df, 'bal_desp')
+        # df = self._run_parser(diario.DiarioContabil(self._logger, self._sources))
+        # self._write(df, 'diario_contabil')
+        df = self._run_parser(balver.BalVer(self._logger, self._sources))
+        self._write(df, 'bal_ver')
 
     def _run_parser(self, parser):
         return parser.parse()
