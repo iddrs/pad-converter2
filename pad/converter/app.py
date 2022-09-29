@@ -1,6 +1,6 @@
 """Classe principal e controller do conversor.
 """
-from pad.converter.parser import empenho, liquidac, pagament, balrec, receita, baldesp, diario, balver, bverenc, rdextra, decreto, brecant, recant, brubant, bver_ant, bvmovant, orgao, uniorcam, programa, projativ, rubrica, recurso, credor
+from pad.converter.parser import empenho, liquidac, pagament, balrec, receita, baldesp, diario, balver, bverenc, rdextra, decreto, brecant, recant, brubant, bver_ant, bvmovant, orgao, uniorcam, programa, projativ, rubrica, recurso, credor, ctadisp, ctaoper
 
 class App:
     _logger = None
@@ -81,8 +81,12 @@ class App:
         # self._write(df, 'rubrica')
         # df = self._run_parser(recurso.Recurso(self._logger, self._sources))
         # self._write(df, 'recurso')
-        df = self._run_parser(credor.Credor(self._logger, self._sources))
-        self._write(df, 'credor')
+        # df = self._run_parser(credor.Credor(self._logger, self._sources))
+        # self._write(df, 'credor')
+        # df = self._run_parser(ctadisp.CtaDisp(self._logger, self._sources))
+        # self._write(df, 'cta_disp')
+        df = self._run_parser(ctaoper.CtaOper(self._logger, self._sources))
+        self._write(df, 'cta_oper')
 
     def _run_parser(self, parser):
         return parser.parse()
