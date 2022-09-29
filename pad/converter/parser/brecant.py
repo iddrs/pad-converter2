@@ -3,8 +3,8 @@ import pandas as pd
 from pad.converter.parser import ParserBase
 
 
-class BalRec(ParserBase):
-    _file_name = 'BAL_REC'
+class BRecAnt(ParserBase):
+    _file_name = 'BREC_ANT'
     _spec = (
         ('codigo_receita', 1, 20, str),
         ('orgao', 21, 22, int),
@@ -16,11 +16,10 @@ class BalRec(ParserBase):
         ('tipo_nivel_receita', 225, 225, str),
         ('numero_nivel_receita', 226, 227, int),
         ('caracteristica_peculiar_receita', 228, 230, int),
-        ('previsao_atualizada', 231, 243, str),
-        ('complemento_recurso_vinculado', 244, 247, int),
-        ('indicador_exercicio_fonte_recurso', 248, 248, int),
-        ('fonte_recurso', 249, 251, int),
-        ('codigo_acompanhamento_orcamentario', 252, 255, int)
+        ('complemento_recurso_vinculado', 231, 234, int),
+        ('indicador_exercicio_fonte_recurso', 235, 235, int),
+        ('fonte_recurso', 236, 238, int),
+        ('codigo_acompanhamento_orcamentario', 239, 242, int)
     )
 
     def __init__(self, logger, sources: list):
@@ -30,9 +29,7 @@ class BalRec(ParserBase):
     def _prepare(self):
         self._receita_orcada()
         self._receita_realizada()
-        self._previsao_atualizada()
-        self._receita_a_arrecadar()
-        self._valor_atualizacao()
+        self._previsto_arrecadado()
         self._codigo_receita()
         self._receita_base()
         self._receita_filtro()
@@ -45,14 +42,8 @@ class BalRec(ParserBase):
     def _receita_realizada(self):
         self._converte_valor('receita_realizada')
 
-    def _previsao_atualizada(self):
-        self._converte_valor('previsao_atualizada')
-
-    def _receita_a_arrecadar(self):
-        self._df['receita_a_arrecadar'] = round(self._df['previsao_atualizada'] - self._df['receita_realizada'], 2)
-
-    def _valor_atualizacao(self):
-        self._df['valor_atualizacao'] = round(self._df['previsao_atualizada'] - self._df['receita_orcada'], 2)
+    def _previsto_arrecadado(self):
+        self._df['excesso_frustracao'] = round(self._df['receita_realizada'] - self._df['receita_orcada'], 2)
 
     def _converte_valor(self, campo):
         """Converte o valor em decimal."""

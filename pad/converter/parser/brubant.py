@@ -3,8 +3,8 @@ import pandas as pd
 from pad.converter.parser import ParserBase
 
 
-class BalDesp(ParserBase):
-    _file_name = 'BAL_DESP'
+class BRubAnt(ParserBase):
+    _file_name = 'BRUB_ANT'
     _spec = (
         ('orgao', 1, 2, int),
         ('uniorcam', 1, 4, int),
@@ -12,29 +12,30 @@ class BalDesp(ParserBase):
         ('subfuncao', 7, 9, int),
         ('programa', 10, 13, int),
         ('projativ', 17, 21, int),
-        ('elemento', 22, 27, str),
-        ('recurso_vinculado', 28, 31, int),
-        ('dotacao_inicial', 32, 44, str),
-        ('atualizacao_monetaria', 45, 57, str),
-        ('credito_suplementar', 58, 70, str),
-        ('credito_especial', 71, 83, str),
-        ('credito_extraordinario', 84, 96, str),
-        ('reducao_dotacao', 97, 109, str),
-        ('suplementacao_recurso_vinculado', 110, 122, str),
-        ('reducao_recurso_vinculado', 123, 135, str),
-        ('valor_empenhado', 136, 148, str),
-        ('valor_liquidado', 149, 161, str),
-        ('valor_pago', 162, 174, str),
-        ('valor_limitado', 175, 187, str),
-        ('valor_recomposto', 188, 200, str),
-        ('previsao_realizacao', 201, 213, str),
-        ('complemento_recurso_vinculado', 214, 217, int),
-        ('transferencia', 218, 230, str),
-        ('transposicao', 231, 243, str),
-        ('remanejamento', 244, 256, str),
-        ('indicador_exercicio_fonte_recurso', 257, 257, int),
-        ('fonte_recurso', 258, 260, int),
-        ('acompanhamento_orcamentario', 261, 264, int)
+        ('rubrica', 22, 36, str),
+        ('recurso_vinculado', 37, 40, int),
+        ('empenhado_1bim', 41, 51, str),
+        ('empenhado_2bim', 52, 62, str),
+        ('empenhado_3bim', 63, 73, str),
+        ('empenhado_4bim', 74, 84, str),
+        ('empenhado_5bim', 85, 95, str),
+        ('empenhado_6bim', 96, 106, str),
+        ('liquidado_1bim', 107, 117, str),
+        ('liquidado_2bim', 118, 128, str),
+        ('liquidado_3bim', 129, 139, str),
+        ('liquidado_4bim', 140, 150, str),
+        ('liquidado_5bim', 151, 161, str),
+        ('liquidado_6bim', 162, 172, str),
+        ('pago_1bim', 173, 183, str),
+        ('pago_2bim', 184, 194, str),
+        ('pago_3bim', 195, 205, str),
+        ('pago_4bim', 206, 216, str),
+        ('pago_5bim', 217, 227, str),
+        ('pago_6bim', 228, 238, str),
+        ('complemento_recurso_vinculado', 239, 242, int),
+        ('indicador_exercicio_fonte_recurso', 243, 243, int),
+        ('fonte_recurso', 244, 246, int),
+        ('acompanhamento_orcamentario', 247, 250, int)
     )
 
     def __init__(self, logger, sources: list):
@@ -43,26 +44,27 @@ class BalDesp(ParserBase):
 
     def _prepare(self):
         # pass
-        self._converte_valor('dotacao_inicial')
-        self._converte_valor('atualizacao_monetaria')
-        self._converte_valor('credito_suplementar')
-        self._converte_valor('credito_especial')
-        self._converte_valor('credito_extraordinario')
-        self._converte_valor('reducao_dotacao')
-        self._converte_valor('suplementacao_recurso_vinculado')
-        self._converte_valor('reducao_recurso_vinculado')
-        self._converte_valor('valor_empenhado')
-        self._converte_valor('valor_liquidado')
-        self._converte_valor('valor_pago')
-        self._converte_valor('valor_limitado')
-        self._converte_valor('valor_recomposto')
-        self._converte_valor('previsao_realizacao')
-        self._converte_valor('transferencia')
-        self._converte_valor('transposicao')
-        self._converte_valor('remanejamento')
-        self._dotacao_atualizada()
-        self._credito_adicional()
-        self._dotacao_a_empenhar()
+        self._converte_valor('empenhado_1bim')
+        self._converte_valor('empenhado_2bim')
+        self._converte_valor('empenhado_3bim')
+        self._converte_valor('empenhado_4bim')
+        self._converte_valor('empenhado_5bim')
+        self._converte_valor('empenhado_6bim')
+        self._converte_valor('liquidado_1bim')
+        self._converte_valor('liquidado_2bim')
+        self._converte_valor('liquidado_3bim')
+        self._converte_valor('liquidado_4bim')
+        self._converte_valor('liquidado_5bim')
+        self._converte_valor('liquidado_6bim')
+        self._converte_valor('pago_1bim')
+        self._converte_valor('pago_2bim')
+        self._converte_valor('pago_3bim')
+        self._converte_valor('pago_4bim')
+        self._converte_valor('pago_5bim')
+        self._converte_valor('pago_6bim')
+        self._empenhado()
+        self._liquidado()
+        self._pago()
         self._empenhado_a_liquidar()
         self._empenhado_a_pagar()
         self._liquidado_a_pagar()
@@ -74,25 +76,18 @@ class BalDesp(ParserBase):
         self._df[campo] = round(self._df[campo] / 100, 2)
         self._df[campo] = self._df[campo].fillna(0.0)
 
-    def _dotacao_atualizada(self):
-        self._df['dotacao_atualizada'] = round(
-            self._df['dotacao_inicial'] + self._df['atualizacao_monetaria'] + self._df['credito_suplementar'] +
-            self._df['credito_especial'] + self._df[
-                'credito_extraordinario'] - self._df['reducao_dotacao'] + self._df['suplementacao_recurso_vinculado'] -
-            self._df['reducao_recurso_vinculado'] + self._df['transferencia'] + self._df['transposicao'] + self._df[
-                'remanejamento'], 2)
+    def _empenhado(self):
+        self._df['valor_empenhado'] = round(self._df.loc[:, 'empenhado_1bim':'empenhado_6bim'].sum(axis=1), 2)
 
-    def _credito_adicional(self):
-        self._df['credito_adicional'] = round(
-            self._df['dotacao_atualizada'] - self._df['dotacao_inicial'], 2)
+    def _liquidado(self):
+        self._df['valor_liquidado'] = round(self._df.loc[:, 'liquidado_1bim':'liquidado_6bim'].sum(axis=1), 2)
 
-    def _dotacao_a_empenhar(self):
-        self._df['dotacao_a_empenhar'] = round(
-            self._df['dotacao_atualizada'] - self._df['valor_empenhado'], 2)
+    def _pago(self):
+        self._df['valor_pago'] = round(self._df.loc[:, 'pago_1bim':'pago_6bim'].sum(axis=1), 2)
 
     def _empenhado_a_liquidar(self):
         self._df['empenhado_a_liquidar'] = round(
-            self._df['dotacao_a_empenhar'] - self._df['valor_liquidado'], 2)
+            self._df['valor_empenhado'] - self._df['valor_liquidado'], 2)
 
     def _empenhado_a_pagar(self):
         self._df['empenhado_a_pagar'] = round(

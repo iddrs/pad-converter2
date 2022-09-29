@@ -1,6 +1,6 @@
 """Classe principal e controller do conversor.
 """
-from pad.converter.parser import empenho, liquidac, pagament, balrec, receita, baldesp, diario, balver, bverenc, rdextra, decreto
+from pad.converter.parser import empenho, liquidac, pagament, balrec, receita, baldesp, diario, balver, bverenc, rdextra, decreto, brecant, recant, brubant, bver_ant, bvmovant
 
 class App:
     _logger = None
@@ -57,8 +57,18 @@ class App:
         #     self._write(df, 'bver_enc')
         # df = self._run_parser(rdextra.RDExtra(self._logger, self._sources))
         # self._write(df, 'rd_extra')
-        df = self._run_parser(decreto.Decreto(self._logger, self._sources))
-        self._write(df, 'decreto')
+        # df = self._run_parser(decreto.Decreto(self._logger, self._sources))
+        # self._write(df, 'decreto')
+        # df = self._run_parser(brecant.BRecAnt(self._logger, self._sources))
+        # self._write(df, 'brec_ant')
+        # df = self._run_parser(recant.RecAnt(self._logger, self._sources))
+        # self._write(df, 'rec_ant')
+        # df = self._run_parser(brubant.BRubAnt(self._logger, self._sources))
+        # self._write(df, 'brub_ant')
+        # df = self._run_parser(bver_ant.BVerAnt(self._logger, self._sources))
+        # self._write(df, 'bver_ant')
+        df = self._run_parser(bvmovant.BVMovAnt(self._logger, self._sources))
+        self._write(df, 'bvmovant')
 
     def _run_parser(self, parser):
         return parser.parse()

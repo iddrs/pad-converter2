@@ -3,8 +3,8 @@ import pandas as pd
 from pad.converter.parser import ParserBase
 
 
-class BalVer(ParserBase):
-    _file_name = 'BAL_VER'
+class BVerAnt(ParserBase):
+    _file_name = 'BVER_ANT'
     _spec = (
         ('conta_contabil', 1, 20, str),
         ('orgao', 21, 22, int),
@@ -20,12 +20,7 @@ class BalVer(ParserBase):
         ('nr_nivel_conta', 252, 253, int),
         ('escrituracao', 255, 255, str),
         ('natureza_informacao', 256, 256, str),
-        ('indicador_superavit_financeiro', 257, 257, str),
-        ('recurso_vinculado', 258, 261, int),
-        ('complemento_recurso_vinculado', 262, 265, int),
-        ('indicador_exercicio_fonte_recurso', 266, 266, int),
-        ('fonte_recurso', 267, 269, int),
-        ('acompanhamento_orcamentario', 270, 273, int)
+        ('indicador_superavit_financeiro', 257, 257, str)
     )
 
     def __init__(self, logger, sources: list):
