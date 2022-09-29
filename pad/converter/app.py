@@ -1,6 +1,6 @@
 """Classe principal e controller do conversor.
 """
-from pad.converter.parser import empenho, liquidac, pagament, balrec, receita, baldesp, diario, balver, bverenc, rdextra, decreto, brecant, recant, brubant, bver_ant, bvmovant
+from pad.converter.parser import empenho, liquidac, pagament, balrec, receita, baldesp, diario, balver, bverenc, rdextra, decreto, brecant, recant, brubant, bver_ant, bvmovant, orgao, uniorcam, programa, projativ, rubrica, recurso, credor
 
 class App:
     _logger = None
@@ -67,8 +67,22 @@ class App:
         # self._write(df, 'brub_ant')
         # df = self._run_parser(bver_ant.BVerAnt(self._logger, self._sources))
         # self._write(df, 'bver_ant')
-        df = self._run_parser(bvmovant.BVMovAnt(self._logger, self._sources))
-        self._write(df, 'bvmovant')
+        # df = self._run_parser(bvmovant.BVMovAnt(self._logger, self._sources))
+        # self._write(df, 'bvmovant')
+        # df = self._run_parser(orgao.Orgao(self._logger, self._sources))
+        # self._write(df, 'orgao')
+        # df = self._run_parser(uniorcam.UniOrcam(self._logger, self._sources))
+        # self._write(df, 'uniorcam')
+        # df = self._run_parser(programa.Programa(self._logger, self._sources))
+        # self._write(df, 'programa')
+        # df = self._run_parser(projativ.ProjAtiv(self._logger, self._sources))
+        # self._write(df, 'projativ')
+        # df = self._run_parser(rubrica.Rubrica(self._logger, self._sources))
+        # self._write(df, 'rubrica')
+        # df = self._run_parser(recurso.Recurso(self._logger, self._sources))
+        # self._write(df, 'recurso')
+        df = self._run_parser(credor.Credor(self._logger, self._sources))
+        self._write(df, 'credor')
 
     def _run_parser(self, parser):
         return parser.parse()

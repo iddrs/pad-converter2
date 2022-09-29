@@ -38,6 +38,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\data_for_test\output\current\csv\orgao.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\data_for_test\output\current\csv\uniorcam.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>

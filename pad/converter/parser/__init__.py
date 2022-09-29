@@ -100,8 +100,10 @@ class ParserBase:
                         self._df.at[i, 'entidade'] = 'fpsm'
                     else:
                         self._df.at[i, 'entidade'] = 'pm'
-                else:
+                elif 'recurso_vinculado' in self._df:
                     if self._df.at[i, 'recurso_vinculado'] == 50:
                         self._df.at[i, 'entidade'] = 'fpsm'
                     else:
                         self._df.at[i, 'entidade'] = 'pm'
+                else:
+                    self._df.at[i, 'entidade'] = ''
