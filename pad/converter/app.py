@@ -81,12 +81,12 @@ class App:
         # self._write(df, 'rubrica')
         # df = self._run_parser(recurso.Recurso(self._logger, self._sources))
         # self._write(df, 'recurso')
-        # df = self._run_parser(credor.Credor(self._logger, self._sources))
-        # self._write(df, 'credor')
+        df = self._run_parser(credor.Credor(self._logger, self._sources))
+        self._write(df, 'credor')
         # df = self._run_parser(ctadisp.CtaDisp(self._logger, self._sources))
         # self._write(df, 'cta_disp')
-        df = self._run_parser(ctaoper.CtaOper(self._logger, self._sources))
-        self._write(df, 'cta_oper')
+        # df = self._run_parser(ctaoper.CtaOper(self._logger, self._sources))
+        # self._write(df, 'cta_oper')
 
     def _run_parser(self, parser):
         return parser.parse()

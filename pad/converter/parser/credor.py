@@ -26,4 +26,18 @@ class Credor(ParserBase):
         self._sources = sources
 
     def _prepare(self):
-        pass
+        self._cpf_cnpj_split()
+
+
+    def _cpf_cnpj_split(self):
+        self._df['cpf_credor'] = None
+        self._df['cnpj_credor'] = None
+        self._df.astype({'cpf_credor': str, 'cnpj_credor': str})
+        for i, r in self._df.iterrows():
+            if r['tipo_pessoa'] == 1:
+                self._df.at[i, 'cpf_credor'] = r['cnpj_cpf']
+            elif r['tipo_pessoa'] == 2:
+                self._df.at[i, 'cnpj_credor'] = r['cnpj_cpf']
+            else:
+                pass
+        del self._df['cnpj_cpf']
