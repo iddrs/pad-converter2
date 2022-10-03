@@ -7,6 +7,7 @@ class ParserBase:
     _logger = None
     _sources = []
     _df = None
+    _cache = 'cache'
 
     def parse(self):
         self._logger.info(f'Processando {self._file_name}.txt ...')
@@ -14,6 +15,7 @@ class ParserBase:
         self._logger.debug(f'Preparando dados de {self._file_name}')
         self._prepare()
         self._inject_entidade()
+        self._save_to_cache()
         return self._df
 
 
@@ -107,3 +109,8 @@ class ParserBase:
                         self._df.at[i, 'entidade'] = 'pm'
                 else:
                     self._df.at[i, 'entidade'] = ''
+
+    def _save_to_cache(self):
+        destiny = path.join(self._cache, f'{self._file_name}.pkl')
+        self._logger.debug(f'Salvando {self._file_name} para {destiny}')
+        self._df.to_pickle(destiny)
