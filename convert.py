@@ -17,8 +17,10 @@ def main():
     logging.basicConfig(level=logging.NOTSET, format='%(levelname)s:\t\t%(message)s')
     logger = logging
 
-    ano = input('Informe o ano desejado [AAAA]: ')
-    mes = int(input('Informe o mês desejado [>=1 & <= 12]: '))
+    # ano = input('Informe o ano desejado [AAAA]: ')
+    # mes = int(input('Informe o mês desejado [>=1 & <= 12]: '))
+    ano = str(2022)
+    mes = int(7)
     if (mes < 1) or (mes > 12):
         logger.error(f'O mês {mes} deve estar entre 1 e 12, inclusive.')
         exit(99)
@@ -33,7 +35,7 @@ def main():
     wcsv = writer.CsvWriter(logger, path.join(output_dir, 'csv'))
     wccsv = writer.CsvWriter(logger, path.join(current_base_dir, 'csv'))
 
-    running = app.App(logger, [pm_input_dir, cm_input_dir], [wcsv, wccsv], mes)
+    running = app.App(logger, [pm_input_dir, cm_input_dir], [wcsv, wccsv], mes, ano)
     running.run()
 
 
