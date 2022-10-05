@@ -207,8 +207,12 @@ class App:
         restos['saldo_final_nao_processados'] = 0.0
         restos['saldo_inicial_processados'] = 0.0
         restos['cancelamento_processados'] = 0.0
-        empenho['pagamento_processados'] = 0.0
+        restos['pagamento_processados'] = 0.0
         restos['saldo_final_processados'] = 0.0
+        restos['saldo_inicial_nao_processados_inscritos_ultimo_ano'] = 0.0
+        restos['saldo_inicial_nao_processados_inscritos_anos_anteriores'] = 0.0
+        restos['saldo_inicial_processados_inscritos_ultimo_ano'] = 0.0
+        restos['saldo_inicial_processados_inscritos_anos_anteriores'] = 0.0
         data_corte = datetime(int(self._year), 1, 1)
         for i, r in restos.iterrows():
             restos.at[i, 'saldo_inicial_nao_processados'] = self._saldo_inicial_nao_processados(r['numero_empenho'], empenho, liquidac, data_corte)
@@ -219,9 +223,36 @@ class App:
                 restos.at[i, 'pagamento_nao_processados'] = self._pagamento_nao_processados(r['numero_empenho'], pagament, data_corte, self._year)
             restos.at[i, 'liquidado_a_pagar_nao_processados'] = round(restos.at[i, 'liquidacao_nao_processados'] - restos.at[i, 'pagamento_nao_processados'], 2)
             restos.at[i, 'saldo_final_nao_processados'] = round(restos.at[i, 'saldo_inicial_nao_processados'] - restos.at[i, 'cancelamento_nao_processados'] - restos.at[i, 'pagamento_nao_processados'], 2)
+            restos.at[i, 'saldo_inicial_processados'] = self._saldo_inicial_processados(r['numero_empenho'], liquidac, pagament, data_corte)
+            restos.at[i, 'cancelamento_processados'] = self._cancelamento_processados(r['numero_empenho'],liquidac, data_corte,self._year)
+            if restos.at[i, 'saldo_inicial_processados'] > 0.0:
+                restos.at[i, 'pagamento_processados'] = self._pagamento_processados(r['numero_empenho'], pagament, data_corte, self._year)
+            restos.at[i, 'saldo_final_processados'] = round(restos.at[i, 'saldo_inicial_processados'] - restos.at[i, 'cancelamento_processados'] - restos.at[i, 'pagamento_processados'], 2)
+            if r['ano_empenho'] == (int(self._year) - 1):
+                restos.at[i, 'saldo_inicial_nao_processados_inscritos_ultimo_ano'] = self._saldo_inicial_nao_processados(r['numero_empenho'], empenho, liquidac, data_corte)
+                restos.at[i, 'saldo_inicial_processados_inscritos_ultimo_ano'] = self._saldo_inicial_processados(r['numero_empenho'], liquidac, pagament, data_corte)
+            else:
+                restos.at[i, 'saldo_inicial_nao_processados_inscritos_anos_anteriores'] = self._saldo_inicial_nao_processados(r['numero_empenho'], empenho, liquidac, data_corte)
+                restos.at[i, 'saldo_inicial_processados_inscritos_anos_anteriores'] = self._saldo_inicial_processados(r['numero_empenho'], liquidac, pagament, data_corte)
 
 
         restos.to_pickle(os.path.join(self._cache, 'RESTOS_PAGAR.pkl'))
+
+    def _pagamento_processados(self, numero_empenho, pagament, data_corte, ano):
+        valor_pago = pagament[(pagament.numero_empenho == numero_empenho) & (pagament['data_pagamento'] >= data_corte) & (pagament.ano_empenho < int(ano))]['valor_pagamento'].sum()
+        return round(valor_pago, 2)
+
+
+    def _cancelamento_processados(self, numero_empenho, liquidac, data_corte, ano):
+        valor_cancelado = liquidac[(liquidac.numero_empenho == numero_empenho) & (liquidac['data_liquidacao'] >= data_corte) & (liquidac.valor_liquidacao < 0.0) & (liquidac.ano_empenho < int(ano))]['valor_liquidacao'].sum()
+        return round(valor_cancelado * -1, 2)
+
+    def _saldo_inicial_processados(self, numero_empenho, liquidac, pagament, data_corte):
+        valor_liquidacao = liquidac[(liquidac.numero_empenho == numero_empenho) & (liquidac['data_liquidacao'] < data_corte)]['valor_liquidacao'].sum()
+        valor_pago = pagament[(pagament.numero_empenho == numero_empenho) & (pagament['data_pagamento'] < data_corte)][
+            'valor_pagamento'].sum()
+        saldo = valor_liquidacao - valor_pago
+        return round(saldo, 2)
 
     def _pagamento_nao_processados(self, numero_empenho, pagament, data_corte, ano):
         valor_pago = pagament[(pagament.numero_empenho == numero_empenho) & (pagament['data_pagamento'] >= data_corte) & (pagament.ano_empenho < int(ano))]['valor_pagamento'].sum()
