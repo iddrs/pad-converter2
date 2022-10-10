@@ -2,43 +2,52 @@
 """
 
 import logging
-from string import Template
 from os import path
+from string import Template
 
 from pad.converter import app, writer
 
-pm_input_base_dir_template = Template(r'.\data_for_test\${ano}\MES${mes}')
-cm_input_base_dir_template = Template(r'.\data_for_test\${ano}\CAMARA\MES${mes}')
-output_base_dir = Template(r'.\data_for_test\output\${ano}-${mes}')
-current_base_dir = r'.\data_for_test\output\current'
+# Configurações
+pm_input_base_dir_template = Template(r'Z:\Abase\ARQUIVOSPAD\${ano}\MES${mes}')  # Local dos arquivos txt do Executivo
+cm_input_base_dir_template = Template(r'Z:\Abase\ARQUIVOSPAD\${ano}\CAMARA\MES${mes}')  # Local dos txt do Legislativo
+output_base_dir = Template(r'C:\Users\Everton\OneDrive\Prefeitura\PAD\v2\${ano}-${mes}')  # Destino dos arquivos
+current_base_dir = r'C:\Users\Everton\OneDrive\Prefeitura\PAD\v2\current'  # Destino dos arquivos para funcionar como um atalho para o mês corrente
 
 
 def main():
+    """Ponto de entrada do programa.
+
+    Este é o controller do programa.
+    """
+
+    # Configura o logger
     logging.basicConfig(level=logging.NOTSET, format='%(levelname)s:\t\t%(message)s')
     logger = logging
 
-    # ano = input('Informe o ano desejado [AAAA]: ')
-    # mes = int(input('Informe o mês desejado [>=1 & <= 12]: '))
-    ano = str(2022)
-    mes = int(7)
+    # Lê o ano e mês a partir da entrada do usuário.
+    ano = input('Informe o ano desejado [AAAA]: ')
+    mes = int(input('Informe o mês desejado [>=1 & <= 12]: '))
+
+    # VErifica se o mês está no intervalo [1,12]
     if (mes < 1) or (mes > 12):
         logger.error(f'O mês {mes} deve estar entre 1 e 12, inclusive.')
         exit(99)
     else:
-        mes = str(mes).zfill(2)
+        mes = str(mes).zfill(2)  # Coloca 0 no início do mês, se for o caso.
     logger.info(f'O período a processar é {mes}/{ano}')
 
+    # Prepara os caminhos de diretório considerando o ano e mês informados pelo usuário.
     pm_input_dir = pm_input_base_dir_template.substitute(ano=ano, mes=mes)
     cm_input_dir = cm_input_base_dir_template.substitute(ano=ano, mes=mes)
     output_dir = output_base_dir.substitute(ano=ano, mes=mes)
 
-    wcsv = writer.CsvWriter(logger, path.join(output_dir, 'csv'))
-    wccsv = writer.CsvWriter(logger, path.join(current_base_dir, 'csv'))
+    # Carrega os writers, que escreverão dos pandas.DataFrame
+    wcsv = writer.CsvWriter(logger, path.join(output_dir, 'csv'))  # CSV writer
+    wccsv = writer.CsvWriter(logger, path.join(current_base_dir, 'csv'))  # CSV writer
 
+    # Executa o módulo principal do programa
     running = app.App(logger, [pm_input_dir, cm_input_dir], [wcsv, wccsv], mes, ano)
     running.run()
-
-
 
 
 if __name__ == '__main__':
