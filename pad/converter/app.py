@@ -5,7 +5,7 @@ import os.path
 from datetime import datetime
 import pandas as pd
 from pad.converter.parser import empenho, liquidac, pagament, balrec, receita, baldesp, diario, balver, bverenc, \
-    rdextra, brecant, recant, brubant, bver_ant, bvmovant, orgao, uniorcam, programa, projativ, rubrica, recurso, \
+    rdextra, decreto, brecant, recant, brubant, bver_ant, bvmovant, orgao, uniorcam, programa, projativ, rubrica, recurso, \
     credor, ctadisp, ctaoper
 
 
