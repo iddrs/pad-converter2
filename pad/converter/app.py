@@ -81,7 +81,13 @@ class App:
         if self._month == 12: # O arquivo BVER_ENC somente é gerado no mês 12
             df = self._run_parser(bverenc.BVerEnc(self._logger, self._sources))
         df = self._run_parser(rdextra.RDExtra(self._logger, self._sources))
-        df = self._run_parser(decreto.Decreto(self._logger, self._sources))
+        # Este código é um código para teste
+        # Basicamente ele ignora a importação do DECRETO.TXT se o período for menor ou igual a setembro de 2022.
+        # Até 09/2022 o layout do arquivo era diferente.
+        if (int(self._year) <= 2022) and (int(self._month) <= 9):
+            pass
+        else:
+            df = self._run_parser(decreto.Decreto(self._logger, self._sources))
         df = self._run_parser(brecant.BRecAnt(self._logger, self._sources))
         df = self._run_parser(recant.RecAnt(self._logger, self._sources))
         df = self._run_parser(brubant.BRubAnt(self._logger, self._sources))

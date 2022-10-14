@@ -8,10 +8,15 @@ from string import Template
 from pad.converter import app, writer
 
 # Configurações
-pm_input_base_dir_template = Template(r'Z:\Abase\ARQUIVOSPAD\${ano}\MES${mes}')  # Local dos arquivos txt do Executivo
-cm_input_base_dir_template = Template(r'Z:\Abase\ARQUIVOSPAD\${ano}\CAMARA\MES${mes}')  # Local dos txt do Legislativo
-output_base_dir = Template(r'C:\Users\Everton\OneDrive\Prefeitura\PAD\v2\${ano}-${mes}')  # Destino dos arquivos
-current_base_dir = r'C:\Users\Everton\OneDrive\Prefeitura\PAD\v2\current'  # Destino dos arquivos para funcionar como um atalho para o mês corrente
+
+# Local dos arquivos txt do Executivo
+pm_input_base_dir_template = Template(r'Z:\Abase\ARQUIVOSPAD\${ano}\MES${mes}')
+# Local dos txt do Legislativo
+cm_input_base_dir_template = Template(r'Z:\Abase\ARQUIVOSPAD\${ano}\CAMARA\MES${mes}')
+# Destino dos arquivos
+output_base_dir = Template(r'C:\Users\Everton\OneDrive\Prefeitura\PAD\v2\${ano}-${mes}')
+# Destino dos arquivos para funcionar como um atalho para o mês corrente
+current_base_dir = r'C:\Users\Everton\OneDrive\Prefeitura\PAD\v2\current'
 
 
 def main():
@@ -25,7 +30,7 @@ def main():
     logger = logging
 
     # Lê o ano e mês a partir da entrada do usuário.
-    ano = input('Informe o ano desejado [AAAA]: ')
+    ano = int(input('Informe o ano desejado [AAAA]: '))
     mes = int(input('Informe o mês desejado [>=1 & <= 12]: '))
 
     # VErifica se o mês está no intervalo [1,12]
