@@ -30,8 +30,37 @@ class CsvWriter:
         """Salva um pandas.DataFrame para um arquivo CSV.
 
         :param df pandas.DataFrame
-        :param filename Um nome de arquivo sem a extenção.
+        :param filename Um nome de arquivo sem a extensão.
         """
         destination = path.join(self._dir, f'{filename}.csv')
         self._logger.debug(f'Escrevendo {len(df)} linhas para {destination} ...')
         df.to_csv(destination, sep=';', header=True, index=False, decimal=',', encoding='utf-8', quoting=csv.QUOTE_NONNUMERIC, date_format='%d-%m-%Y', errors='replace')
+
+class PickleWriter:
+    """Writer para arquivos Pickle.
+    """
+    _logger = None # Objeto logger
+    _dir = '' # Diretório onde os arquivos pickle serão salvos.
+
+    def __init__(self, logger, dirname: str) -> None:
+        """Construtor do writer
+
+        :param logger: Objeto logger
+        :param dirname: Diretório onde os arquivos pickle serão salvos.
+        """
+        self._logger = logger
+        self._dir = dirname
+        # Verifica se o diretório existe, se não, cria ele.
+        if not path.exists(dirname):
+            logger.warn(f'{dirname} não existe e será criado...')
+            makedirs(dirname)
+
+    def write(self, df, filename):
+        """Salva um pandas.DataFrame para um arquivo pickle.
+
+        :param df pandas.DataFrame
+        :param filename Um nome de arquivo sem a extensão.
+        """
+        destination = path.join(self._dir, f'{filename}.pickle')
+        self._logger.debug(f'Escrevendo {len(df)} linhas para {destination} ...')
+        df.to_pickle(destination)

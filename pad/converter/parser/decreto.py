@@ -13,13 +13,13 @@ class Decreto(ParserBase):
         ('valor_credito_adicional', 57, 69, str),
         ('valor_reducao_dotacoes', 70, 82, str),
         ('tipo_credito_adicional', 83, 83, int),
-        ('origem_recurso', 84, int),
+        ('origem_recurso', 84, 84, int),
         ('alteracao_orcamentaria', 85, 85, int),
         ('valor_alteracao_orcamentaria', 86, 98, str),
         ('data_reabertura', 99, 106, str),
         ('valor_reaberto', 107, 119, str),
-        ('recurso_vinculado_suplementacao', 41, 44, int),
-        ('recurso_vinculado_reducao', 41, 44, int),
+        ('recurso_vinculado_suplementacao', 41, 44, str),
+        ('recurso_vinculado_reducao', 41, 44, str),
         ('indicador_exercicio_fonte_recurso_suplementacao', 128, 128, int),
         ('fonte_recurso_suplementacao', 129, 131, int),
         ('indicador_exercicio_fonte_recurso_reducao', 132, 132, int),
@@ -50,4 +50,4 @@ class Decreto(ParserBase):
 
     def _converte_data(self, campo):
         """Converte DDMMAAAA para o formato de data do Pandas."""
-        self._df[campo] = pd.to_datetime(self._df[campo], format='%d%m%Y', exact=True)
+        self._df[campo] = pd.to_datetime(self._df[campo], format='%d%m%Y', exact=True, errors='ignore')

@@ -1,17 +1,19 @@
 """Módulo base para os parsers
 """
-import pandas as pd
-from os import path
 import warnings
 from datetime import datetime
+from os import path
+
+import pandas as pd
+
 
 class ParserBase:
     """Calsse base para os parsers.
     """
-    _logger = None # Objeto logger
-    _sources = [] # Lista de diretórios de origem dos dados
-    _df = None # pandas.DataFrame com os dados convertidos.
-    _cache = 'cache' # Diretório de cache. Eu sei, ficou estranho pois tem a mesma propriedade em pad.converter.app.App. Vou mudar isso no futuro.
+    _logger = None  # Objeto logger
+    _sources = []  # Lista de diretórios de origem dos dados
+    _df = None  # pandas.DataFrame com os dados convertidos.
+    _cache = 'cache'  # Diretório de cache. Eu sei, ficou estranho pois tem a mesma propriedade em pad.converter.app.App. Vou mudar isso no futuro.
 
     def parse(self):
         """Controlador da conversão.
@@ -26,7 +28,7 @@ class ParserBase:
 
 
     def _text_to_df(self):
-        """Covnerte os dados de FWF para um pandas.DataFrame.
+        """Converte os dados de FWF para um pandas.DataFrame.
         """
         self._logger.debug(f'Convertendo texto para data.frame de {self._file_name} ...')
         self._df = []
@@ -37,7 +39,11 @@ class ParserBase:
                 continue
             with warnings.catch_warnings(): # Ignora um aviso de que não tem converters para todas as colunas, conforme https://docs.python.org/3/library/warnings.html#temporarily-suppressing-warnings
                 warnings.simplefilter('ignore')
-                df = pd.read_fwf(f, colspecs=self._colspec(), names=self._colnames(), dtype=self._dtypes(), skiprows=1, skipfooter=1, skipblanklines=True, encoding_errors='replace', converters=self._converters())
+                df = pd.read_fwf(f, colspecs=self._colspec(), names=self._colnames(), dtype=self._dtypes(), skiprows=1,
+                                 skipfooter=1, skipblanklines=True, encoding_errors='replace',
+                                 converters=self._converters(),
+                                 parse_dates=False,
+                                 keep_default_na=True)
                 header = self._parse_header(f)
                 df = self._inject_header(df, header)
             self._df.append(df)

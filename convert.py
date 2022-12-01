@@ -49,9 +49,11 @@ def main():
     # Carrega os writers, que escreverão dos pandas.DataFrame
     wcsv = writer.CsvWriter(logger, path.join(output_dir, 'csv'))  # CSV writer
     wccsv = writer.CsvWriter(logger, path.join(current_base_dir, 'csv'))  # CSV writer
+    wpickle = writer.PickleWriter(logger, path.join(output_dir, 'pickle'))  # Pickle writer
+    wcpickle = writer.PickleWriter(logger, path.join(current_base_dir, 'pickle'))  # Pickle writer
 
     # Executa o módulo principal do programa
-    running = app.App(logger, [pm_input_dir, cm_input_dir], [wcsv, wccsv], mes, ano)
+    running = app.App(logger, [pm_input_dir, cm_input_dir], [wcsv, wccsv, wpickle, wcpickle], mes, ano)
     running.run()
 
 

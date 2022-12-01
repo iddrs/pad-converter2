@@ -9,6 +9,7 @@ from pad.converter.parser import empenho, liquidac, pagament, balrec, receita, b
     credor, ctadisp, ctaoper
 
 
+
 class App:
     """Classe principal do programa.
     """
@@ -55,7 +56,7 @@ class App:
     def _after(self):
         """Controlador de rotinas de finalização.
 
-        As rotinas de finalização englobam quaisquer processamentos extras que precisem ser feitos somente com todos arquivos já convertidos e outras rotinas pós-conversão.
+        As rotinas de finalização englobam quaisquer processamentos extras que precisem ser feitos somente com todos os arquivos já convertidos e outras rotinas pós-conversão.
         """
         self._logger.info('Executando atividades finais...')
         self._liquidac_empenho_concat()
@@ -66,7 +67,7 @@ class App:
         """Controlador da conversão.
         """
         self._logger.info('Executando a conversão...')
-        # Aqui eu optei por uma certa repetição de código para cada arquivo a ser convertido, pois é possível que,
+        # Aqui eu optei por uma certa repetição de código para cada arquivo a ser convertido, pois, é possível que,
         # no futuro, algum arquivo necessite de alguma rotina mais específica.
         # Como não se espera grandes mudanças em termos de arquivos a processar, penso que seja uma solução adequada.
         # Entretanto, talvez eu refatore isso no futuro fazendo um loop numa lista de parsers.
