@@ -32,6 +32,8 @@ class Pagament(ParserBase):
     def _prepare(self):
         self._data_pagamento()
         self._valor_pagamento()
+        self._df['conta_contabil_debito'] = [el.lstrip('0') for el in self._df['conta_contabil_debito']]
+        self._df['conta_contabil_credito'] = [el.lstrip('0') for el in self._df['conta_contabil_credito']]
 
     def _data_pagamento(self):
         """Converte DDMMAAAA para o formato de data do Pandas."""

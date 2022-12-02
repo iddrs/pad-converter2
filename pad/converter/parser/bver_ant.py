@@ -37,6 +37,7 @@ class BVerAnt(ParserBase):
         self._converte_valor('saldo_atual_credor')
         self._consolida_saldo_anterior()
         self._consolida_saldo_atual()
+        self._df['conta_contabil'] = [el.lstrip('0') for el in self._df['conta_contabil']]
 
     def _converte_valor(self, campo):
         """Converte o valor em decimal."""

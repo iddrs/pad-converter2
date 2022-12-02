@@ -20,7 +20,7 @@ class RDExtra(ParserBase):
         self._sources = sources
 
     def _prepare(self):
-        # pass
+        self._df['conta_contabil'] = [el.lstrip('0') for el in self._df['conta_contabil']]
         self._converte_valor('valor_movimento')
 
 
