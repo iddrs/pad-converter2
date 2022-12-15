@@ -244,7 +244,7 @@ class App:
         ]]
 
         restos = restos.drop_duplicates()
-        restos = restos[restos['ano_empenho'] <= int(self._year)]
+        restos = restos[restos['ano_empenho'] < int(self._year)]
 
         restos['saldo_inicial_nao_processados'] = 0.0
         restos['cancelamento_nao_processados'] = 0.0
@@ -261,8 +261,16 @@ class App:
         restos['saldo_inicial_nao_processados_inscritos_anos_anteriores'] = 0.0
         restos['saldo_inicial_processados_inscritos_ultimo_ano'] = 0.0
         restos['saldo_inicial_processados_inscritos_anos_anteriores'] = 0.0
+        restos['entidade'] = None
         data_corte = datetime(int(self._year), 1, 1)
         for i, r in restos.iterrows():
+            if r['orgao'] == 1:
+                restos.at[i, 'entidade'] = 'cm'
+            elif r['orgao'] == 12:
+                restos.at[i, 'entidade'] = 'fpsm'
+            else:
+                restos.at[i, 'entidade'] = 'pm'
+
             restos.at[i, 'saldo_inicial_nao_processados'] = self._saldo_inicial_nao_processados(r['numero_empenho'],
                                                                                                 empenho, liquidac,
                                                                                                 data_corte)
@@ -305,6 +313,7 @@ class App:
                     r['numero_empenho'], empenho, liquidac, data_corte)
                 restos.at[i, 'saldo_inicial_processados_inscritos_anos_anteriores'] = self._saldo_inicial_processados(
                     r['numero_empenho'], liquidac, pagament, data_corte)
+
 
         restos.to_pickle(os.path.join(self._cache, 'RESTOS_PAGAR.pkl'))
 
