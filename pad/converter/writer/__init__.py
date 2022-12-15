@@ -35,6 +35,25 @@ class CsvWriter:
         destination = path.join(self._dir, f'{filename}.csv')
         self._logger.debug(f'Escrevendo {len(df)} linhas para {destination} ...')
         df.to_csv(destination, sep=';', header=True, index=False, decimal=',', encoding='utf-8', quoting=csv.QUOTE_NONNUMERIC, date_format='%d-%m-%Y', errors='replace')
+        self.write_metadata(df, filename)
+
+    def write_metadata(self, df, filename):
+        """Salva metadados
+
+        :param df pandas.DataFrame
+        :param filename Um nome de arquivo sem a extensão.
+        """
+
+        metadata_dir = path.join(self._dir, 'metadata')
+        if not path.exists(metadata_dir):
+            makedirs(metadata_dir)
+        destination = path.join(metadata_dir, f'{filename}.txt')
+        self._logger.debug(f'Escrevendo meta dados de {filename} para {destination} ...')
+        with open(destination, 'w') as f:
+            f.write(str(df.dtypes))
+            f.write('\n\r')
+            f.write(str(df.head()))
+
 
 class PickleWriter:
     """Writer para arquivos Pickle.
@@ -64,3 +83,21 @@ class PickleWriter:
         destination = path.join(self._dir, f'{filename}.pickle')
         self._logger.debug(f'Escrevendo {len(df)} linhas para {destination} ...')
         df.to_pickle(destination)
+        self.write_metadata(df, filename)
+
+    def write_metadata(self, df, filename):
+        """Salva metadados
+
+        :param df pandas.DataFrame
+        :param filename Um nome de arquivo sem a extensão.
+        """
+
+        metadata_dir = path.join(self._dir, 'metadata')
+        if not path.exists(metadata_dir):
+            makedirs(metadata_dir)
+        destination = path.join(metadata_dir, f'{filename}.txt')
+        self._logger.debug(f'Escrevendo meta dados de {filename} para {destination} ...')
+        with open(destination, 'w') as f:
+            f.write(str(df.dtypes))
+            f.write('\n\r')
+            f.write(str(df.head()))
