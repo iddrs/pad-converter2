@@ -153,8 +153,15 @@ class ParserBase:
                         self._df.at[i, 'entidade'] = 'fpsm'
                     else:
                         self._df.at[i, 'entidade'] = 'pm'
-                elif 'recurso_vinculado' in self._df: # Verifica pelo campo do recurso_vinculado
-                    if self._df.at[i, 'recurso_vinculado'] == 50:
+                elif 'recurso_vinculado_suplementacao' in self._df: # Verifica pelo campo do recurso_vinculado
+                    # print(self._df.at[i, 'recurso_vinculado_suplementacao'], type(self._df.at[i, 'recurso_vinculado_suplementacao']))
+                    # exit()
+                    if self._df.at[i, 'recurso_vinculado_suplementacao'] == '0050':
+                        self._df.at[i, 'entidade'] = 'fpsm'
+                    else:
+                        self._df.at[i, 'entidade'] = 'pm'
+                elif 'recurso_vinculado_reducao' in self._df: # Verifica pelo campo do recurso_vinculado
+                    if self._df.at[i, 'recurso_vinculado_reducao'] == '0050':
                         self._df.at[i, 'entidade'] = 'fpsm'
                     else:
                         self._df.at[i, 'entidade'] = 'pm'
