@@ -62,6 +62,7 @@ class App:
         self._liquidac_empenho_concat()
         self._pagament_empenho_concat()
         self._restos_pagar()
+        self._moviemp()
 
     def _parse(self):
         """Controlador da conversão.
@@ -378,3 +379,135 @@ class App:
             (empenho.numero_empenho == numero_empenho) & (empenho['data_empenho'] >= data_corte) & (
                         empenho.valor_empenho < 0.0) & (empenho.ano_empenho < int(ano))]['valor_empenho'].sum()
         return round(valor_cancelado * -1, 2)
+
+    def _moviemp(self):
+        """Cria um arquivo com os saldos e movimentações de empenhos do ano.
+        """
+        self._logger.debug('Montando MOVIEMP...')
+        liquidac = pd.read_pickle(os.path.join(self._cache, 'LIQUIDAC.pkl'))
+        pagament = pd.read_pickle(os.path.join(self._cache, 'PAGAMENT.pkl'))
+        empenho = pd.read_pickle(os.path.join(self._cache, 'EMPENHO.pkl'))
+        moviemp = empenho[[
+            'orgao',
+            'uniorcam',
+            'funcao',
+            'subfuncao',
+            'programa',
+            'projativ',
+            'rubrica',
+            'recurso_vinculado',
+            'contrapartida_recurso_vinculado',
+            'numero_empenho',
+            'ano_empenho',
+            'entidade_empenho',
+            'empenho',
+            'credor',
+            'caracteristica_peculiar_despesa',
+            'registro_precos',
+            'numero_licitacao',
+            'ano_licitacao',
+            'forma_contratacao',
+            'base_legal_contratacao',
+            'despesa_funcionario',
+            'licitacao_compartilhada',
+            'cnpj_gerenciador',
+            'complemento_recurso_vinculado',
+            'indicador_exercicio_fonte_recurso',
+            'fonte_recurso',
+            'acompanhamento_orcamentario'
+        ]]
+
+        moviemp = moviemp.drop_duplicates()
+        moviemp = moviemp[moviemp['ano_empenho'] == int(self._year)]
+
+        moviemp['empenhado_bruto'] = 0.0
+        moviemp['estorno_empenhado'] = 0.0
+        moviemp['empenhado_liquido'] = 0.0
+        moviemp['liquidacao_bruto'] = 0.0
+        moviemp['estorno_liquidacao'] = 0.0
+        moviemp['liquidacao_liquido'] = 0.0
+        moviemp['pagamento_bruto'] = 0.0
+        moviemp['estorno_pagamento'] = 0.0
+        moviemp['pagamento_liquido'] = 0.0
+        moviemp['empenhado_a_liquidar'] = 0.0
+        moviemp['empenhado_a_pagar'] = 0.0
+        moviemp['liquidacao_a_pagar'] = 0.0
+        moviemp['entidade'] = None
+        data_corte = datetime(int(self._year), 1, 1)
+        for i, r in moviemp.iterrows():
+            if r['orgao'] == 1:
+                moviemp.at[i, 'entidade'] = 'cm'
+            elif r['orgao'] == 12:
+                moviemp.at[i, 'entidade'] = 'fpsm'
+            else:
+                moviemp.at[i, 'entidade'] = 'pm'
+
+            moviemp.at[i, 'empenhado_bruto'] = self._empenhado_bruto(r['numero_empenho'], empenho, data_corte)
+            moviemp.at[i, 'estorno_empenhado'] = self._estorno_empenhado(r['numero_empenho'], empenho, data_corte)
+            moviemp.at[i, 'empenhado_liquido'] = round(moviemp.at[i, 'empenhado_bruto'] - moviemp.at[i, 'estorno_empenhado'], 2)
+
+            moviemp.at[i, 'liquidacao_bruto'] = self._liquidacao_bruto(r['numero_empenho'], liquidac, data_corte)
+            moviemp.at[i, 'estorno_liquidacao'] = self._estorno_liquidacao(r['numero_empenho'], liquidac, data_corte)
+            moviemp.at[i, 'liquidacao_liquido'] = round(moviemp.at[i, 'liquidacao_bruto'] - moviemp.at[i, 'estorno_liquidacao'], 2)
+
+            moviemp.at[i, 'pagamento_bruto'] = self._pagamento_bruto(r['numero_empenho'], pagament, data_corte)
+            moviemp.at[i, 'estorno_pagamento'] = self._estorno_pagamento(r['numero_empenho'], pagament, data_corte)
+            moviemp.at[i, 'pagamento_liquido'] = round(moviemp.at[i, 'pagamento_bruto'] - moviemp.at[i, 'estorno_pagamento'], 2)
+
+            moviemp.at[i, 'empenhado_a_liquidar'] = round(
+                moviemp.at[i, 'empenhado_liquido'] - moviemp.at[i, 'liquidacao_liquido'], 2)
+            moviemp.at[i, 'empenhado_a_pagar'] = round(
+                moviemp.at[i, 'empenhado_liquido'] - moviemp.at[i, 'pagamento_liquido'], 2)
+            moviemp.at[i, 'liquidacao_a_pagar'] = round(
+                moviemp.at[i, 'liquidacao_liquido'] - moviemp.at[i, 'pagamento_liquido'], 2)
+
+        moviemp.to_pickle(os.path.join(self._cache, 'MOVIEMP.pkl'))
+
+
+    def _empenhado_bruto(self, numero_empenho, empenho, data_corte):
+        """Método auxiliar para _moviemp
+        """
+        valor = empenho[
+            (empenho.numero_empenho == numero_empenho) & (empenho['data_empenho'] >= data_corte) & (
+                        empenho.valor_empenho > 0.0)]['valor_empenho'].sum()
+        return round(valor, 2)
+
+    def _estorno_empenhado(self, numero_empenho, empenho, data_corte):
+        """Método auxiliar para _moviemp
+        """
+        valor = empenho[
+            (empenho.numero_empenho == numero_empenho) & (empenho['data_empenho'] >= data_corte) & (
+                        empenho.valor_empenho < 0.0)]['valor_empenho'].sum()
+        return round(valor * -1, 2)
+
+    def _liquidacao_bruto(self, numero_empenho, liquidac, data_corte):
+        """Método auxiliar para _moviemp
+        """
+        valor = liquidac[
+            (liquidac.numero_empenho == numero_empenho) & (liquidac['data_liquidacao'] >= data_corte) & (
+                    liquidac.valor_liquidacao > 0.0)]['valor_liquidacao'].sum()
+        return round(valor, 2)
+
+    def _estorno_liquidacao(self, numero_empenho, liquidac, data_corte):
+        """Método auxiliar para _moviemp
+        """
+        valor = liquidac[
+            (liquidac.numero_empenho == numero_empenho) & (liquidac['data_liquidacao'] >= data_corte) & (
+                    liquidac.valor_liquidacao < 0.0)]['valor_liquidacao'].sum()
+        return round(valor * -1, 2)
+
+    def _pagamento_bruto(self, numero_empenho, pagament, data_corte):
+        """Método auxiliar para _moviemp
+        """
+        valor = pagament[
+            (pagament.numero_empenho == numero_empenho) & (pagament['data_pagamento'] >= data_corte) & (
+                    pagament.valor_pagamento > 0.0)]['valor_pagamento'].sum()
+        return round(valor, 2)
+
+    def _estorno_pagamento(self, numero_empenho, pagament, data_corte):
+        """Método auxiliar para _moviemp
+        """
+        valor = pagament[
+            (pagament.numero_empenho == numero_empenho) & (pagament['data_pagamento'] >= data_corte) & (
+                    pagament.valor_pagamento < 0.0)]['valor_pagamento'].sum()
+        return round(valor * -1, 2)
