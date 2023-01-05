@@ -52,7 +52,9 @@ class BalRec(ParserBase):
         self._df['receita_a_arrecadar'] = round(self._df['previsao_atualizada'] - self._df['receita_realizada'], 2)
 
     def _valor_atualizacao(self):
-        self._df['valor_atualizacao'] = round(self._df['previsao_atualizada'] - self._df['receita_orcada'], 2)
+        previsao_atualizada = self._df['previsao_atualizada'].fillna(0.0)
+        receita_orcada = self._df['receita_orcada'].fillna(0.0)
+        self._df['valor_atualizacao'] = round(previsao_atualizada - receita_orcada, 2)
 
     def _converte_valor(self, campo):
         """Converte o valor em decimal."""
