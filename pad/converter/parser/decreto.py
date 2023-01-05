@@ -50,4 +50,4 @@ class Decreto(ParserBase):
 
     def _converte_data(self, campo):
         """Converte DDMMAAAA para o formato de data do Pandas."""
-        self._df[campo] = pd.to_datetime(self._df[campo], format='%d%m%Y', exact=True, errors='ignore')
+        self._df[campo] = pd.to_datetime(self._df[campo], format='%d%m%Y', exact=True, errors='coerce')
