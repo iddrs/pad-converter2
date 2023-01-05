@@ -76,28 +76,28 @@ class BalDesp(ParserBase):
 
     def _dotacao_atualizada(self):
         self._df['dotacao_atualizada'] = round(
-            self._df['dotacao_inicial'] + self._df['atualizacao_monetaria'] + self._df['credito_suplementar'] +
-            self._df['credito_especial'] + self._df[
-                'credito_extraordinario'] - self._df['reducao_dotacao'] + self._df['suplementacao_recurso_vinculado'] -
-            self._df['reducao_recurso_vinculado'] + self._df['transferencia'] + self._df['transposicao'] + self._df[
-                'remanejamento'], 2)
+            self._df['dotacao_inicial'].fillna(0.0) + self._df['atualizacao_monetaria'].fillna(0.0) + self._df['credito_suplementar'].fillna(0.0) +
+            self._df['credito_especial'].fillna(0.0) + self._df[
+                'credito_extraordinario'].fillna(0.0) - self._df['reducao_dotacao'].fillna(0.0) + self._df['suplementacao_recurso_vinculado'].fillna(0.0) -
+            self._df['reducao_recurso_vinculado'].fillna(0.0) + self._df['transferencia'].fillna(0.0) + self._df['transposicao'].fillna(0.0) + self._df[
+                'remanejamento'].fillna(0.0), 2)
 
     def _credito_adicional(self):
         self._df['credito_adicional'] = round(
-            self._df['dotacao_atualizada'] - self._df['dotacao_inicial'], 2)
+            self._df['dotacao_atualizada'].fillna(0.0) - self._df['dotacao_inicial'].fillna(0.0), 2)
 
     def _dotacao_a_empenhar(self):
         self._df['dotacao_a_empenhar'] = round(
-            self._df['dotacao_atualizada'] - self._df['valor_empenhado'], 2)
+            self._df['dotacao_atualizada'].fillna(0.0) - self._df['valor_empenhado'].fillna(0.0), 2)
 
     def _empenhado_a_liquidar(self):
         self._df['empenhado_a_liquidar'] = round(
-            self._df['dotacao_a_empenhar'] - self._df['valor_liquidado'], 2)
+            self._df['valor_empenhado'].fillna(0.0) - self._df['valor_liquidado'].fillna(0.0), 2)
 
     def _empenhado_a_pagar(self):
         self._df['empenhado_a_pagar'] = round(
-            self._df['valor_empenhado'] - self._df['valor_pago'], 2)
+            self._df['valor_empenhado'].fillna(0.0) - self._df['valor_pago'].fillna(0.0), 2)
 
     def _liquidado_a_pagar(self):
         self._df['liquidado_a_pagar'] = round(
-            self._df['valor_liquidado'] - self._df['valor_pago'], 2)
+            self._df['valor_liquidado'].fillna(0.0) - self._df['valor_pago'].fillna(0.0), 2)
