@@ -49,7 +49,9 @@ class BalRec(ParserBase):
         self._converte_valor('previsao_atualizada')
 
     def _receita_a_arrecadar(self):
-        self._df['receita_a_arrecadar'] = round(self._df['previsao_atualizada'] - self._df['receita_realizada'], 2)
+        previsao_atualizada = self._df['previsao_atualizada'].fillna(0.0)
+        receita_realizada = self._df['receita_realizada'].fillna(0.0)
+        self._df['receita_a_arrecadar'] = round(previsao_atualizada - receita_realizada, 2)
 
     def _valor_atualizacao(self):
         previsao_atualizada = self._df['previsao_atualizada'].fillna(0.0)
