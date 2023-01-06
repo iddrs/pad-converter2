@@ -35,6 +35,7 @@ class App:
         self._month = month
         self._year = year
 
+
     def run(self):
         """Executa a rotina principal da conversão.
         """
@@ -80,7 +81,7 @@ class App:
         df = self._run_parser(baldesp.BalDesp(self._logger, self._sources))
         df = self._run_parser(diario.DiarioContabil(self._logger, self._sources))
         df = self._run_parser(balver.BalVer(self._logger, self._sources))
-        if self._month == 12: # O arquivo BVER_ENC somente é gerado no mês 12
+        if self._month == '12': # O arquivo BVER_ENC somente é gerado no mês 12
             df = self._run_parser(bverenc.BVerEnc(self._logger, self._sources))
         df = self._run_parser(rdextra.RDExtra(self._logger, self._sources))
         # Este código é um código para teste
