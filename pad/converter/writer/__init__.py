@@ -101,3 +101,32 @@ class PickleWriter:
             f.write(str(df.dtypes))
             f.write('\n\r')
             f.write(str(df.head()))
+
+class ParquetWriter:
+    """Writer para arquivos Parquet.
+    """
+    _logger = None # Objeto logger
+    _dir = '' # Diretório onde os arquivos parquet serão salvos.
+
+    def __init__(self, logger, dirname: str) -> None:
+        """Construtor do writer
+
+        :param logger: Objeto logger
+        :param dirname: Diretório onde os arquivos parquet serão salvos.
+        """
+        self._logger = logger
+        self._dir = dirname
+        # Verifica se o diretório existe, se não, cria ele.
+        if not path.exists(dirname):
+            logger.warn(f'{dirname} não existe e será criado...')
+            makedirs(dirname)
+
+    def write(self, df, filename):
+        """Salva um pandas.DataFrame para um arquivo parquet.
+
+        :param df pandas.DataFrame
+        :param filename Um nome de arquivo sem a extensão.
+        """
+        destination = path.join(self._dir, f'{filename}.parquet')
+        self._logger.debug(f'Escrevendo {len(df)} linhas para {destination} ...')
+        df.to_parquet(destination)

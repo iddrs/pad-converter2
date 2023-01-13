@@ -33,7 +33,7 @@ def main():
     ano = int(input('Informe o ano desejado [AAAA]: '))
     mes = int(input('Informe o mês desejado [>=1 & <= 12]: '))
 
-    # VErifica se o mês está no intervalo [1,12]
+    # Verifica se o mês está no intervalo [1,12]
     if (mes < 1) or (mes > 12):
         logger.error(f'O mês {mes} deve estar entre 1 e 12, inclusive.')
         exit(99)
@@ -51,9 +51,11 @@ def main():
     wccsv = writer.CsvWriter(logger, path.join(current_base_dir, 'csv'))  # CSV writer
     wpickle = writer.PickleWriter(logger, path.join(output_dir, 'pickle'))  # Pickle writer
     wcpickle = writer.PickleWriter(logger, path.join(current_base_dir, 'pickle'))  # Pickle writer
+    wparquet = writer.ParquetWriter(logger, path.join(output_dir, 'parquet'))  # Parquet writer
+    wcparquet = writer.ParquetWriter(logger, path.join(current_base_dir, 'parquet'))  # Parquet writer
 
     # Executa o módulo principal do programa
-    running = app.App(logger, [pm_input_dir, cm_input_dir], [wcsv, wccsv, wpickle, wcpickle], mes, ano)
+    running = app.App(logger, [pm_input_dir, cm_input_dir], [wcsv, wccsv, wpickle, wcpickle, wparquet, wcparquet], mes, ano)
     running.run()
 
 
