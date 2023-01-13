@@ -14,9 +14,11 @@ pm_input_base_dir_template = Template(r'Z:\Abase\ARQUIVOSPAD\${ano}\MES${mes}')
 # Local dos txt do Legislativo
 cm_input_base_dir_template = Template(r'Z:\Abase\ARQUIVOSPAD\${ano}\CAMARA\MES${mes}')
 # Destino dos arquivos
-output_base_dir = Template(r'C:\Users\Everton\Desktop\Prefeitura\PAD\v2\${ano}-${mes}')
+# output_base_dir = Template(r'C:\Users\Everton\Desktop\Prefeitura\PAD\v2\${ano}-${mes}')
+output_base_dir = Template(r'C:\Users\Everton\Desktop\Prefeitura\PAD\${ano}-${mes}')
 # Destino dos arquivos para funcionar como um atalho para o mês corrente
-current_base_dir = r'C:\Users\Everton\Desktop\Prefeitura\PAD\v2\current'
+# current_base_dir = r'C:\Users\Everton\Desktop\Prefeitura\PAD\v2\current'
+current_base_dir = r'C:\Users\Everton\Desktop\Prefeitura\PAD\current'
 
 
 def main():
