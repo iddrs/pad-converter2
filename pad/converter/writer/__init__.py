@@ -130,3 +130,32 @@ class ParquetWriter:
         destination = path.join(self._dir, f'{filename}.parquet')
         self._logger.debug(f'Escrevendo {len(df)} linhas para {destination} ...')
         df.to_parquet(destination)
+
+class XlsxWriter:
+    """Writer para arquivos Excel xlsx.
+    """
+    _logger = None # Objeto logger
+    _dir = '' # Diretório onde os arquivos xlsx serão salvos.
+
+    def __init__(self, logger, dirname: str) -> None:
+        """Construtor do writer
+
+        :param logger: Objeto logger
+        :param dirname: Diretório onde os arquivos xlsx serão salvos.
+        """
+        self._logger = logger
+        self._dir = dirname
+        # Verifica se o diretório existe, se não, cria ele.
+        if not path.exists(dirname):
+            logger.warn(f'{dirname} não existe e será criado...')
+            makedirs(dirname)
+
+    def write(self, df, filename):
+        """Salva um pandas.DataFrame para um arquivo xlsx.
+
+        :param df pandas.DataFrame
+        :param filename Um nome de arquivo sem a extensão.
+        """
+        destination = path.join(self._dir, f'{filename}.xlsx')
+        self._logger.debug(f'Escrevendo {len(df)} linhas para {destination} ...')
+        df.to_excel(destination, sheet_name=filename, index=False)
