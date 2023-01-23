@@ -49,10 +49,10 @@ def main():
     output_dir = output_base_dir.substitute(ano=ano, mes=mes)
 
     # Carrega os writers, que escreverão dos pandas.DataFrame
-    wcsv = writer.CsvWriter(logger, path.join(output_dir, 'csv'))  # CSV writer
-    wccsv = writer.CsvWriter(logger, path.join(current_base_dir, 'csv'))  # CSV writer
-    wpickle = writer.PickleWriter(logger, path.join(output_dir, 'pickle'))  # Pickle writer
-    wcpickle = writer.PickleWriter(logger, path.join(current_base_dir, 'pickle'))  # Pickle writer
+    # wcsv = writer.CsvWriter(logger, path.join(output_dir, 'csv'))  # CSV writer
+    # wccsv = writer.CsvWriter(logger, path.join(current_base_dir, 'csv'))  # CSV writer
+    # wpickle = writer.PickleWriter(logger, path.join(output_dir, 'pickle'))  # Pickle writer
+    # wcpickle = writer.PickleWriter(logger, path.join(current_base_dir, 'pickle'))  # Pickle writer
     wparquet = writer.ParquetWriter(logger, path.join(output_dir, 'parquet'))  # Parquet writer
     wcparquet = writer.ParquetWriter(logger, path.join(current_base_dir, 'parquet'))  # Parquet writer
     wxlsx = writer.XlsxWriter(logger, path.join(output_dir, 'excel'))  # Xlsx writer
