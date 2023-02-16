@@ -8,7 +8,7 @@ import pandas as pd
 
 
 class ParserBase:
-    """Calsse base para os parsers.
+    """Classe base para os parsers.
     """
     _logger = None  # Objeto logger
     _sources = []  # Lista de diretórios de origem dos dados
@@ -153,15 +153,27 @@ class ParserBase:
                         self._df.at[i, 'entidade'] = 'fpsm'
                     else:
                         self._df.at[i, 'entidade'] = 'pm'
-                elif 'recurso_vinculado_suplementacao' in self._df: # Verifica pelo campo do recurso_vinculado
+                elif 'fonte_recurso_suplementacao' in self._df: # Verifica pelo campo do recurso_vinculado
                     # print(self._df.at[i, 'recurso_vinculado_suplementacao'], type(self._df.at[i, 'recurso_vinculado_suplementacao']))
                     # exit()
-                    if self._df.at[i, 'recurso_vinculado_suplementacao'] == '0050':
+                    if self._df.at[i, 'fonte_recurso_suplementacao'] == '0800':
+                        self._df.at[i, 'entidade'] = 'fpsm'
+                    elif self._df.at[i, 'fonte_recurso_suplementacao'] == '0801':
+                        self._df.at[i, 'entidade'] = 'fpsm'
+                    elif self._df.at[i, 'fonte_recurso_suplementacao'] == '0802':
+                        self._df.at[i, 'entidade'] = 'fpsm'
+                    elif self._df.at[i, 'fonte_recurso_suplementacao'] == '0803':
                         self._df.at[i, 'entidade'] = 'fpsm'
                     else:
                         self._df.at[i, 'entidade'] = 'pm'
-                elif 'recurso_vinculado_reducao' in self._df: # Verifica pelo campo do recurso_vinculado
-                    if self._df.at[i, 'recurso_vinculado_reducao'] == '0050':
+                elif 'fonte_recurso_reducao' in self._df: # Verifica pelo campo do recurso_vinculado
+                    if self._df.at[i, 'fonte_recurso_reducao'] == '0800':
+                        self._df.at[i, 'entidade'] = 'fpsm'
+                    elif self._df.at[i, 'recurso_vinculado_reducao'] == '0801':
+                        self._df.at[i, 'entidade'] = 'fpsm'
+                    elif self._df.at[i, 'fonte_recurso_reducao'] == '0802':
+                        self._df.at[i, 'entidade'] = 'fpsm'
+                    elif self._df.at[i, 'fonte_recurso_reducao'] == '0803':
                         self._df.at[i, 'entidade'] = 'fpsm'
                     else:
                         self._df.at[i, 'entidade'] = 'pm'

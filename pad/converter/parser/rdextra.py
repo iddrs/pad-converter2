@@ -12,7 +12,7 @@ class RDExtra(ParserBase):
         ('valor_movimento', 25, 37, str),
         ('identificador_ingresso_dispendio', 38, 38, str),
         ('classificacao', 39, 40, int),
-        ('recurso_vinculado', 41, 44, int)
+        # ('recurso_vinculado', 41, 44, int) removido a partir de jan/2023
     )
 
     def __init__(self, logger, sources: list):

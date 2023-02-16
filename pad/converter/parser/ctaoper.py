@@ -10,14 +10,14 @@ class CtaOper(ParserBase):
         ('data', 31, 38, str),
         ('valor', 39, 51, str),
         ('sinal_valor', 25, 52, str),
-        ('recurso_vinculado', 53, 56, int),
+        # ('recurso_vinculado', 53, 56, int), removido a partir de jan/2023
         ('codigo_receita', 57, 76, str),
         ('orgao_receita', 77, 78, int),
         ('uniorcam_receita', 77, 80, int),
         ('conta_contabil', 81, 100, str),
         ('orgao_conta_contabil', 101, 102, int),
         ('uniorcam_conta_contabil', 101, 104, int),
-        ('complemento_recurso_vinculado', 105, 108, int),
+        # ('complemento_recurso_vinculado', 105, 108, int), removido a partir de jan/2023
         ('indicador_exercicio_fonte_recurso', 109, 109, int),
         ('fonte_recurso', 109, 112, int),
         ('acompanhamento_orcamentario', 113, 116, int)
