@@ -248,6 +248,7 @@ class App:
         restos['a_liquidar_nao_processados'] = 0.0
         restos['pagamento_nao_processados'] = 0.0
         restos['liquidado_a_pagar_nao_processados'] = 0.0
+        restos['cancelamento_nao_processados_liquidados'] = 0.0
         restos['saldo_final_nao_processados'] = 0.0
         restos['saldo_inicial_processados'] = 0.0
         restos['cancelamento_processados'] = 0.0
@@ -310,8 +311,20 @@ class App:
                 restos.at[i, 'saldo_inicial_processados_inscritos_anos_anteriores'] = self._saldo_inicial_processados(
                     r['numero_empenho'], liquidac, pagament, data_corte)
 
+        restos = self._ajusta_cancelamento_restos(restos)
 
         restos.to_pickle(os.path.join(self._cache, 'RESTOS_PAGAR.pkl'))
+
+    def _ajusta_cancelamento_restos(self, restos):
+        for i, r in restos.iterrows():
+            if restos.at[i, 'cancelamento_processados'] > restos.at[i, 'saldo_final_nao_processados']:
+                diff = restos.at[i, 'cancelamento_processados'] - restos.at[i, 'saldo_final_nao_processados'];
+                # restos.at[i, 'cancelamento_nao_processados'] += diff
+                restos.at[i, 'cancelamento_processados'] -= diff
+                restos.at[i, 'cancelamento_nao_processados_liquidados'] = diff
+                # restos.at[i, 'saldo_final_nao_processados'] -= diff
+                restos.at[i, 'saldo_final_processados'] += diff
+        return restos
 
     def _pagamento_processados(self, numero_empenho, pagament, data_corte, ano):
         """Método auxiliar para _restos_pagar

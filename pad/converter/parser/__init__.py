@@ -143,11 +143,31 @@ class ParserBase:
             if self._df.at[i, 'cnpj'] == '12292535000162': # Se houver a coluna cnpj com o valor do CNPJ da câmara.
                 self._df.at[i, 'entidade'] = 'cm' # Identifica como da entidade cm
             else: # Se o campo cnpj não tiver o valor da câmara
-                if 'orgao' in self._df: # Verifica pelo órgão
-                    if self._df.at[i, 'orgao'] == 12: # do RPPS
+                if 'fonte_recurso' in self._df: # Verifica pelo campo do fonte_recurso
+                    if self._df.at[i, 'fonte_recurso'] == 800:
                         self._df.at[i, 'entidade'] = 'fpsm'
-                    else: # ou prefeitura
-                        self._df.at[i, 'entidade'] = 'pm'
+                    elif self._df.at[i, 'fonte_recurso'] == 801:
+                        self._df.at[i, 'entidade'] = 'fpsm'
+                    elif self._df.at[i, 'fonte_recurso'] == 802:
+                        self._df.at[i, 'entidade'] = 'fpsm'
+                    elif self._df.at[i, 'fonte_recurso'] == 803:
+                        self._df.at[i, 'entidade'] = 'fpsm'
+                    else:
+                        if 'orgao' in self._df: # Verifica pelo órgão
+                            if self._df.at[i, 'orgao'] == 12: # do RPPS
+                                self._df.at[i, 'entidade'] = 'fpsm'
+                            else:
+                                if 'fonte_recurso' in self._df:
+                                    if self._df.at[i, 'fonte_recurso'] == 800:
+                                        self._df.at[i, 'entidade'] = 'fpsm'
+                                    elif self._df.at[i, 'fonte_recurso'] == 801:
+                                        self._df.at[i, 'entidade'] = 'fpsm'
+                                    elif self._df.at[i, 'fonte_recurso'] == 802:
+                                        self._df.at[i, 'entidade'] = 'fpsm'
+                                    elif self._df.at[i, 'fonte_recurso'] == 803:
+                                        self._df.at[i, 'entidade'] = 'fpsm'
+                                    else:
+                                        self._df.at[i, 'entidade'] = 'pm'
                 elif 'entidade_empenho' in self._df: # verifica pelo campo entidade_empenho
                     if self._df.at[i, 'entidade_empenho'] == 1:
                         self._df.at[i, 'entidade'] = 'fpsm'
@@ -156,24 +176,24 @@ class ParserBase:
                 elif 'fonte_recurso_suplementacao' in self._df: # Verifica pelo campo do recurso_vinculado
                     # print(self._df.at[i, 'recurso_vinculado_suplementacao'], type(self._df.at[i, 'recurso_vinculado_suplementacao']))
                     # exit()
-                    if self._df.at[i, 'fonte_recurso_suplementacao'] == '0800':
+                    if self._df.at[i, 'fonte_recurso_suplementacao'] == 800:
                         self._df.at[i, 'entidade'] = 'fpsm'
-                    elif self._df.at[i, 'fonte_recurso_suplementacao'] == '0801':
+                    elif self._df.at[i, 'fonte_recurso_suplementacao'] == 801:
                         self._df.at[i, 'entidade'] = 'fpsm'
-                    elif self._df.at[i, 'fonte_recurso_suplementacao'] == '0802':
+                    elif self._df.at[i, 'fonte_recurso_suplementacao'] == 802:
                         self._df.at[i, 'entidade'] = 'fpsm'
-                    elif self._df.at[i, 'fonte_recurso_suplementacao'] == '0803':
+                    elif self._df.at[i, 'fonte_recurso_suplementacao'] == 803:
                         self._df.at[i, 'entidade'] = 'fpsm'
                     else:
                         self._df.at[i, 'entidade'] = 'pm'
                 elif 'fonte_recurso_reducao' in self._df: # Verifica pelo campo do recurso_vinculado
-                    if self._df.at[i, 'fonte_recurso_reducao'] == '0800':
+                    if self._df.at[i, 'fonte_recurso_reducao'] == 800:
                         self._df.at[i, 'entidade'] = 'fpsm'
-                    elif self._df.at[i, 'recurso_vinculado_reducao'] == '0801':
+                    elif self._df.at[i, 'recurso_vinculado_reducao'] == 801:
                         self._df.at[i, 'entidade'] = 'fpsm'
-                    elif self._df.at[i, 'fonte_recurso_reducao'] == '0802':
+                    elif self._df.at[i, 'fonte_recurso_reducao'] == 802:
                         self._df.at[i, 'entidade'] = 'fpsm'
-                    elif self._df.at[i, 'fonte_recurso_reducao'] == '0803':
+                    elif self._df.at[i, 'fonte_recurso_reducao'] == 803:
                         self._df.at[i, 'entidade'] = 'fpsm'
                     else:
                         self._df.at[i, 'entidade'] = 'pm'
