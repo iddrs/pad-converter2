@@ -197,6 +197,13 @@ class ParserBase:
                         self._df.at[i, 'entidade'] = 'fpsm'
                     else:
                         self._df.at[i, 'entidade'] = 'pm'
+                elif 'orgao' in self._df:
+                    if self._df.at[i, 'orgao'] == 1:
+                        self._df.at[i, 'entidade'] = 'cm'
+                    elif self._df.at[i, 'orgao'] == 12:
+                        self._df.at[i, 'entidade'] = 'fpsm'
+                    else:
+                        self._df.at[i, 'entidade'] = 'pm'
                 else: # Se nenhum padrão casar, deixa em branco.
                     self._df.at[i, 'entidade'] = ''
 
