@@ -15,7 +15,7 @@ $hello = @"
 .\venv\Scripts\activate.ps1
 
 # Executa a conversão
-python convert.py
+python main.py
 
 # desativa o venv
 deactivate
