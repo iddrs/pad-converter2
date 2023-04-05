@@ -118,7 +118,11 @@ class Receita(ParserBase):
     def _tipo_receita(self):
         self._df['tipo_receita'] = ''
         for i, r in self._df.iterrows():
-            self._df.at[i, 'tipo_receita'] = self._df.at[i, 'codigo_receita'][7:8]
+            t = int(self._df.at[i, 'receita_base'][7:8])
+            if (t == 0) and (self._df.at[
+                                 i, 'fonte_recurso'] > 0):  # Considera como principal, mesmo que o tipo_receita seja 0, porque tem receitas que foram cadastradas com 0 em vez de 1
+                t = 1
+            self._df.at[i, 'tipo_receita'] = t
 
     def _metas_mensais(self):
         self._df['meta_jan'] = 0.0

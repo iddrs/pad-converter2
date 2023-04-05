@@ -98,4 +98,7 @@ class BalRec(ParserBase):
     def _tipo_receita(self):
         self._df['tipo_receita'] = ''
         for i, r in self._df.iterrows():
-            self._df.at[i, 'tipo_receita'] = self._df.at[i, 'codigo_receita'][7:8]
+            t = int(self._df.at[i, 'receita_base'][7:8])
+            if (t == 0) and (self._df.at[i, 'tipo_nivel_receita'] == 'A'): # Considera como principal, mesmo que o tipo_receita seja 0, porque tem receitas que foram cadastradas com 0 em vez de 1
+                t = 1
+            self._df.at[i, 'tipo_receita'] = t
