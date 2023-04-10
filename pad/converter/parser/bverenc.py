@@ -25,7 +25,7 @@ class BVerEnc(ParserBase):
         ('complemento_recurso_vinculado', 262, 265, int),
         ('indicador_exercicio_fonte_recurso', 266, 266, int),
         ('fonte_recurso', 267, 269, int),
-        ('acompanhamento_orcamentario', 270, 273, int)
+        ('codigo_acompanhamento_orcamentario', 270, 273, int)
     )
 
     def __init__(self, logger, sources: list):
