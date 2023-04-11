@@ -18,7 +18,7 @@ class Liquidac(ParserBase):
         ('historico_liquidacao', 251, 650, str),
         ('existe_contrato', 651, 651, str),
         ('numero_contrato_tce', 652, 671, int),
-        ('numero_contrato', 671, 691, str),
+        ('numero_contrato', 672, 691, str),
         ('ano_contrato', 692, 695, int),
         ('existe_documento_fiscal', 696, 696, str),
         ('numero_documento_fiscal', 697, 705, int),
