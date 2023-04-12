@@ -152,7 +152,7 @@ class App:
                            'complemento_recurso_vinculado',
                            'indicador_exercicio_fonte_recurso',
                            'fonte_recurso',
-                           'acompanhamento_orcamentario']]
+                           'codigo_acompanhamento_orcamentario']]
         empenho = empenho.drop_duplicates()
         liquidac = pd.merge(liquidac, empenho, on='numero_empenho', how='left', suffixes=('', '_r'))
         liquidac.to_pickle(os.path.join(self._cache, 'LIQUIDAC.pkl'))
@@ -187,7 +187,7 @@ class App:
             'complemento_recurso_vinculado',
             'indicador_exercicio_fonte_recurso',
             'fonte_recurso',
-            'acompanhamento_orcamentario'
+            'codigo_acompanhamento_orcamentario'
         ]]
         empenho = empenho.drop_duplicates()
         pagament = pd.merge(pagament, empenho, on='numero_empenho', how='left', suffixes=('', '_r'))
@@ -236,7 +236,7 @@ class App:
             'complemento_recurso_vinculado',
             'indicador_exercicio_fonte_recurso',
             'fonte_recurso',
-            'acompanhamento_orcamentario'
+            'codigo_acompanhamento_orcamentario'
         ]]
 
         restos = restos.drop_duplicates()
@@ -422,7 +422,7 @@ class App:
             'complemento_recurso_vinculado',
             'indicador_exercicio_fonte_recurso',
             'fonte_recurso',
-            'acompanhamento_orcamentario'
+            'codigo_acompanhamento_orcamentario'
         ]]
 
         moviemp = moviemp.drop_duplicates()

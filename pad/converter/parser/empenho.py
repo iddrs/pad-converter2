@@ -25,7 +25,7 @@ class Empenho(ParserBase):
         ('credor', 80, 89, int),
         ('caracteristica_peculiar_despesa', 255, 257, int),
         ('registro_precos', 260, 260, str),
-        ('numero_licitacao', 281, 300, str),
+        ('numero_licitacao', 281, 300, int),
         ('ano_licitacao', 301, 304, int),
         ('historico_empenho', 305, 704, str),
         ('forma_contratacao', 705, 707, str),
@@ -36,7 +36,7 @@ class Empenho(ParserBase):
         ('complemento_recurso_vinculado', 726, 729, int),
         ('indicador_exercicio_fonte_recurso', 730, 730, int),
         ('fonte_recurso', 731, 733, int),
-        ('acompanhamento_orcamentario', 734, 737, int)
+        ('codigo_acompanhamento_orcamentario', 734, 737, int)
     )
 
     def __init__(self, logger, sources: list):
