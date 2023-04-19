@@ -24,7 +24,7 @@ class DiarioContabil(ParserBase):
         ('complemento_recurso_vinculado', 261, 264, int),
         ('indicador_exercicio_fonte_recurso', 265, 265, int),
         ('fonte_recurso', 266, 268, int),
-        ('acompanhamento_orcamentario', 269, 272, int)
+        ('codigo_acompanhamento_orcamentario', 269, 272, int)
     )
 
     def __init__(self, logger, sources: list):
