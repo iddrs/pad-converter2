@@ -42,6 +42,7 @@ class BalVer(ParserBase):
         self._consolida_saldo_anterior()
         self._consolida_saldo_atual()
         self._df['conta_contabil'] = [el.lstrip('0') for el in self._df['conta_contabil']]
+        self._calcula_saldos_movimentacoes_natural()
 
     def _converte_valor(self, campo):
         """Converte o valor em decimal."""
@@ -107,3 +108,32 @@ class BalVer(ParserBase):
 
             self._df.at[i, 'valor_saldo_final'] = saldo
             self._df.at[i, 'natureza_saldo_final'] = natureza
+
+
+    def _calcula_saldos_movimentacoes_natural(self):
+        self._df['saldo_inicial'] = 0.0
+        self._df['debitos'] = 0.0
+        self._df['creditos'] = 0.0
+        self._df['saldo_final'] = 0.0
+        for i, r in self._df.iterrows():
+            classe = int(r['conta_contabil'][0:1])
+            saldo_inicial_devedor = r['saldo_anterior_devedor']
+            saldo_inicial_credor = r['saldo_anterior_credor']
+            saldo_atual_devedor = r['saldo_atual_devedor']
+            saldo_atual_credor = r['saldo_atual_credor']
+
+            if classe in [1, 3, 5, 7]:
+                saldo_inicial = round(saldo_inicial_devedor - saldo_inicial_credor, 2)
+                debitos = round(r['movimento_devedor'], 2)
+                creditos = round(r['movimento_credor']*-1, 2)
+                saldo_final = round(saldo_atual_devedor - saldo_atual_credor, 2)
+            else:
+                saldo_inicial = round(saldo_inicial_credor - saldo_inicial_devedor, 2)
+                debitos = round(r['movimento_devedor']*-1, 2)
+                creditos = round(r['movimento_credor'], 2)
+                saldo_final = round(saldo_atual_credor - saldo_atual_devedor, 2)
+
+            self._df.at[i, 'saldo_inicial'] = saldo_inicial
+            self._df.at[i, 'debitos'] = debitos
+            self._df.at[i, 'creditos'] = creditos
+            self._df.at[i, 'saldo_final'] = saldo_final
