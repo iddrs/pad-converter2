@@ -28,8 +28,8 @@ class Receita(ParserBase):
         ('meta_5bim', 229, 240, str),
         ('meta_6bim', 241, 252, str),
         ('caracteristica_peculiar_receita', 253, 255, int),
-        # ('recurso_vinculado', 256, 259, int), removido a partir de jan/2023
-        # ('complemento_recurso_vinculado', 260, 263, int), removido a partir de jan/2023
+        # ('recurso_vinculado', 256, 259, int), #removido a partir de jan/2023
+        # ('complemento_recurso_vinculado', 260, 263, int), #removido a partir de jan/2023
         ('indicador_exercicio_fonte_recurso', 264, 264, int),
         ('fonte_recurso', 265, 267, int),
         ('codigo_acompanhamento_orcamentario', 268, 271, int)

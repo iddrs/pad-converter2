@@ -13,28 +13,28 @@ class BalDesp(ParserBase):
         ('programa', 10, 13, int),
         ('projativ', 17, 21, int),
         ('elemento', 22, 27, str),
-        # ('recurso_vinculado', 28, 31, int), removido a partir de jan/2023
+        ('recurso_vinculado', 28, 31, int), #removido a partir de jan/2023
         ('dotacao_inicial', 32, 44, str),
         ('atualizacao_monetaria', 45, 57, str),
         ('credito_suplementar', 58, 70, str),
         ('credito_especial', 71, 83, str),
         ('credito_extraordinario', 84, 96, str),
         ('reducao_dotacao', 97, 109, str),
-        # ('suplementacao_recurso_vinculado', 110, 122, str), removido a partir de jan/2023
-        # ('reducao_recurso_vinculado', 123, 135, str), removido a partir de jan/2023
+        # ('suplementacao_recurso_vinculado', 110, 122, str), #removido a partir de jan/2023
+        # ('reducao_recurso_vinculado', 123, 135, str), #removido a partir de jan/2023
         ('valor_empenhado', 136, 148, str),
         ('valor_liquidado', 149, 161, str),
         ('valor_pago', 162, 174, str),
         ('valor_limitado', 175, 187, str),
         ('valor_recomposto', 188, 200, str),
         ('previsao_realizacao', 201, 213, str),
-        # ('complemento_recurso_vinculado', 214, 217, int), removido a partir de jan/2023
+        # ('complemento_recurso_vinculado', 214, 217, int), #removido a partir de jan/2023
         ('transferencia', 218, 230, str),
         ('transposicao', 231, 243, str),
         ('remanejamento', 244, 256, str),
         ('indicador_exercicio_fonte_recurso', 257, 257, int),
         ('fonte_recurso', 258, 260, int),
-        # ('acompanhamento_orcamentario', 261, 264, int) removido a partir de jan/2023
+        # ('acompanhamento_orcamentario', 261, 264, int) #removido a partir de jan/2023
     )
 
     def __init__(self, logger, sources: list):

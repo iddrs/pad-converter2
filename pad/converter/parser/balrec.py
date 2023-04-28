@@ -11,13 +11,13 @@ class BalRec(ParserBase):
         ('uniorcam', 21, 24, int),
         ('receita_orcada', 25, 37, str),
         ('receita_realizada', 38, 50, str),
-        # ('recurso_vinculado', 51, 54, int), removido a partir de jan/2023
+        # ('recurso_vinculado', 51, 54, int), #removido a partir de jan/2023
         ('especificacao_receita', 55, 224, str),
         ('tipo_nivel_receita', 225, 225, str),
         ('numero_nivel_receita', 226, 227, int),
         ('caracteristica_peculiar_receita', 228, 230, int),
         ('previsao_atualizada', 231, 243, str),
-        # ('complemento_recurso_vinculado', 244, 247, int), removido a partir de jan/2023
+        # ('complemento_recurso_vinculado', 244, 247, int), #removido a partir de jan/2023
         ('indicador_exercicio_fonte_recurso', 248, 248, int),
         ('fonte_recurso', 249, 251, int),
         ('codigo_acompanhamento_orcamentario', 252, 255, int)
