@@ -13,7 +13,7 @@ class BalDesp(ParserBase):
         ('programa', 10, 13, int),
         ('projativ', 17, 21, int),
         ('elemento', 22, 27, str),
-        ('recurso_vinculado', 28, 31, int), #removido a partir de jan/2023
+        # ('recurso_vinculado', 28, 31, int), #removido a partir de jan/2023
         ('dotacao_inicial', 32, 44, str),
         ('atualizacao_monetaria', 45, 57, str),
         ('credito_suplementar', 58, 70, str),
