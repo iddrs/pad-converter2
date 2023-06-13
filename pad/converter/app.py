@@ -384,8 +384,10 @@ class App:
         """Método auxiliar para _restos_pagar
         """
         valor_cancelado = empenho[
-            (empenho.numero_empenho == numero_empenho) & (empenho['data_empenho'] >= data_corte) & (
-                        empenho.valor_empenho < 0.0) & (empenho.ano_empenho < int(ano))]['valor_empenho'].sum()
+            # (empenho.numero_empenho == numero_empenho) & (empenho['data_empenho'] >= data_corte) & (
+            #             empenho.valor_empenho < 0.0) & (empenho.ano_empenho < int(ano))]['valor_empenho'].sum()
+            # O comando acima não funciona quando ocorre o estorno de um cancelamento. O que funciona é o de baixo.
+            (empenho.numero_empenho == numero_empenho) & (empenho['data_empenho'] >= data_corte) & (empenho.ano_empenho < int(ano))]['valor_empenho'].sum()
         return round(valor_cancelado * -1, 2)
 
     def _moviemp(self):
