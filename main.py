@@ -53,14 +53,15 @@ def main():
     # wccsv = writer.CsvWriter(logger, path.join(current_base_dir, 'csv'))  # CSV writer
     # wpickle = writer.PickleWriter(logger, path.join(output_dir, 'pickle'))  # Pickle writer
     # wcpickle = writer.PickleWriter(logger, path.join(current_base_dir, 'pickle'))  # Pickle writer
-    wparquet = writer.ParquetWriter(logger, path.join(output_dir, 'parquet'))  # Parquet writer
+    # wparquet = writer.ParquetWriter(logger, path.join(output_dir, 'parquet'))  # Parquet writer
     # wcparquet = writer.ParquetWriter(logger, path.join(current_base_dir, 'parquet'))  # Parquet writer
     wxlsx = writer.XlsxWriter(logger, path.join(output_dir, 'excel'))  # Xlsx writer
     # wcxlsx = writer.XlsxWriter(logger, path.join(current_base_dir, 'excel'))  # Xlsx writer
 
     # Executa o módulo principal do programa
     # running = app.App(logger, [pm_input_dir, cm_input_dir], [wparquet, wcparquet, wxlsx, wcxlsx], mes, ano)
-    running = app.App(logger, [pm_input_dir, cm_input_dir], [wparquet, wxlsx], mes, ano)
+    #running = app.App(logger, [pm_input_dir, cm_input_dir], [wparquet, wxlsx], mes, ano)
+    running = app.App(logger, [pm_input_dir, cm_input_dir], [wxlsx], mes, ano)
     running.run()
 
 
