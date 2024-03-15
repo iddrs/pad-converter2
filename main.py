@@ -15,10 +15,10 @@ pm_input_base_dir_template = Template(r'Z:\Abase\ARQUIVOSPAD\${ano}\MES${mes}')
 cm_input_base_dir_template = Template(r'Z:\Abase\ARQUIVOSPAD\${ano}\CAMARA\MES${mes}')
 # Destino dos arquivos
 # output_base_dir = Template(r'C:\Users\Everton\Desktop\Prefeitura\PAD\v2\${ano}-${mes}')
-output_base_dir = Template(r'C:\Users\Everton\Desktop\Prefeitura\PAD\${ano}-${mes}')
+output_base_dir = Template(r'C:\Users\Everton\OneDrive - independencia.rs.gov.br\Prefeitura\PAD\${ano}-${mes}')
 # Destino dos arquivos para funcionar como um atalho para o mês corrente
 # current_base_dir = r'C:\Users\Everton\Desktop\Prefeitura\PAD\v2\current'
-current_base_dir = r'C:\Users\Everton\Desktop\Prefeitura\PAD\current'
+current_base_dir = r'C:\Users\Everton\OneDrive - independencia.rs.gov.br\Prefeitura\PAD\current'
 
 
 def main():
@@ -53,15 +53,14 @@ def main():
     # wccsv = writer.CsvWriter(logger, path.join(current_base_dir, 'csv'))  # CSV writer
     # wpickle = writer.PickleWriter(logger, path.join(output_dir, 'pickle'))  # Pickle writer
     # wcpickle = writer.PickleWriter(logger, path.join(current_base_dir, 'pickle'))  # Pickle writer
-    # wparquet = writer.ParquetWriter(logger, path.join(output_dir, 'parquet'))  # Parquet writer
+    wparquet = writer.ParquetWriter(logger, path.join(output_dir, 'parquet'))  # Parquet writer
     # wcparquet = writer.ParquetWriter(logger, path.join(current_base_dir, 'parquet'))  # Parquet writer
     wxlsx = writer.XlsxWriter(logger, path.join(output_dir, 'excel'))  # Xlsx writer
     # wcxlsx = writer.XlsxWriter(logger, path.join(current_base_dir, 'excel'))  # Xlsx writer
 
     # Executa o módulo principal do programa
     # running = app.App(logger, [pm_input_dir, cm_input_dir], [wparquet, wcparquet, wxlsx, wcxlsx], mes, ano)
-    #running = app.App(logger, [pm_input_dir, cm_input_dir], [wparquet, wxlsx], mes, ano)
-    running = app.App(logger, [pm_input_dir, cm_input_dir], [wxlsx], mes, ano)
+    running = app.App(logger, [pm_input_dir, cm_input_dir], [wparquet, wxlsx], mes, ano)
     running.run()
 
 
